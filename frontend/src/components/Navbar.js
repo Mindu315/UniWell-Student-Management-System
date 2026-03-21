@@ -38,7 +38,9 @@ const Navbar = () => {
     const titleMap = {
       '/dashboard': 'Dashboard',
       '/profile': 'Profile',
-      '/admin': 'Reports & User Management'
+      '/admin': 'Reports & User Management',
+      '/flashcards': 'Flashcards',
+      '/ai-quizzes': 'AI Quizzes'
     };
 
     return titleMap[location.pathname] || 'UniWell Workspace';

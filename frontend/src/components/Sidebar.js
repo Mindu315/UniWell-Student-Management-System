@@ -5,8 +5,8 @@ const Sidebar = ({ isAdmin, onNavigate }) => {
     { key: 'dashboard', label: 'Dashboard', icon: '🏠', to: '/dashboard', type: 'route' },
     { key: 'stress', label: 'Stress Management', icon: '🌿', type: 'placeholder' },
     { key: 'academic', label: 'Academic Performance', icon: '📘', type: 'placeholder' },
-    { key: 'neuro', label: 'Neuro Card', icon: '🧠', type: 'placeholder' },
-    { key: 'quiz', label: 'AI Quizzes', icon: '🤖', type: 'placeholder' },
+    { key: 'ai-quizzes', label: 'AI Quizzes', icon: '🤖', to: '/ai-quizzes', type: 'route' },
+    { key: 'flashcards', label: 'Flashcards', icon: '🃏', to: '/flashcards', type: 'route' },
     { key: 'career', label: 'Career Guidance', icon: '🎯', type: 'placeholder' }
   ];
 

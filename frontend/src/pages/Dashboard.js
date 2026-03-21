@@ -113,7 +113,13 @@ const Dashboard = () => {
           <article className="summary-card quiz-card">
             <div className="summary-icon">🤖</div>
             <h3>AI Quizzes</h3>
-            <button className="summary-action">Start Quiz →</button>
+            <button
+              className="summary-action"
+              onClick={() => navigate('/ai-quizzes')}
+              type="button"
+            >
+              Start Quiz →
+            </button>
           </article>
         </section>
 
