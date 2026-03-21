@@ -176,7 +176,6 @@ const Register = () => {
               <div className="form-group">
                 <label>Full Name</label>
                 <div className="input-wrapper">
-                  <span className="input-icon">👤</span>
                   <input
                     type="text"
                     name="fullName"
@@ -191,7 +190,6 @@ const Register = () => {
               <div className="form-group">
                 <label>Student ID</label>
                 <div className="input-wrapper">
-                  <span className="input-icon">🎓</span>
                   <input
                     type="text"
                     name="studentId"
@@ -207,7 +205,6 @@ const Register = () => {
             <div className="form-group">
               <label>Email Address</label>
               <div className="input-wrapper">
-                <span className="input-icon">✉️</span>
                 <input
                   type="email"
                   name="email"
@@ -222,8 +219,7 @@ const Register = () => {
             <div className="form-row">
               <div className="form-group">
                 <label>Password</label>
-                <div className="input-wrapper">
-                  <span className="input-icon">🔒</span>
+                <div className="input-wrapper has-toggle">
                   <input
                     type={showPassword ? 'text' : 'password'}
                     name="password"
@@ -261,8 +257,7 @@ const Register = () => {
 
               <div className="form-group">
                 <label>Confirm Password</label>
-                <div className="input-wrapper">
-                  <span className="input-icon">🔒</span>
+                <div className="input-wrapper has-toggle">
                   <input
                     type={showConfirmPassword ? 'text' : 'password'}
                     name="confirmPassword"
@@ -295,7 +290,6 @@ const Register = () => {
               <div className="form-group">
                 <label>Faculty</label>
                 <div className="input-wrapper">
-                  <span className="input-icon">🏛️</span>
                   <select
                     name="faculty"
                     value={formData.faculty}
@@ -315,7 +309,6 @@ const Register = () => {
               <div className="form-group">
                 <label>Year</label>
                 <div className="input-wrapper">
-                  <span className="input-icon">📅</span>
                   <select
                     name="year"
                     value={formData.year}
@@ -335,7 +328,6 @@ const Register = () => {
             <div className="form-group">
               <label>Degree Program</label>
               <div className="input-wrapper">
-                <span className="input-icon">📖</span>
                 <input
                   type="text"
                   name="degreeProgram"

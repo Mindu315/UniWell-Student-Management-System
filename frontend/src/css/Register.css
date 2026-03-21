@@ -248,24 +248,20 @@
   align-items: center;
 }
 
-.input-icon {
-  position: absolute;
-  left: 1rem;
-  font-size: 1.2rem;
-  pointer-events: none;
-  z-index: 1;
-}
-
 .input-wrapper input,
 .input-wrapper select {
   width: 100%;
-  padding: 0.95rem 1rem 0.95rem 3rem;
+  padding: 0.95rem 1rem;
   border: 2px solid #E5E7EB;
   border-radius: 12px;
   font-size: 1rem;
   color: #2B2B2B;
   background: #FFFFFF;
   transition: all 0.3s ease;
+}
+
+.input-wrapper.has-toggle input {
+  padding-right: 2.8rem;
 }
 
 .input-wrapper input:focus,

@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import AdminUsers from './pages/AdminUsers';
+import StressManagementPage from './pages/StressManagementPage';
 import './styles.css';
 
 function App() {
@@ -39,6 +40,14 @@ function App() {
                 <Profile />
               </ProtectedRoute>
             } 
+          />
+          <Route
+            path="/stress-management"
+            element={
+              <ProtectedRoute>
+                <StressManagementPage />
+              </ProtectedRoute>
+            }
           />
 
           {/* Admin Only Routes */}

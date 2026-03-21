@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 const Sidebar = ({ isAdmin, onNavigate }) => {
   const primaryMenuItems = [
     { key: 'dashboard', label: 'Dashboard', icon: '🏠', to: '/dashboard', type: 'route' },
-    { key: 'stress', label: 'Stress Management', icon: '🌿', type: 'placeholder' },
+    { key: 'stress', label: 'Stress Management', icon: '🌿', to: '/stress-management', type: 'route' },
     { key: 'academic', label: 'Academic Performance', icon: '📘', type: 'placeholder' },
     { key: 'neuro', label: 'Neuro Card', icon: '🧠', type: 'placeholder' },
     { key: 'quiz', label: 'AI Quizzes', icon: '🤖', type: 'placeholder' },
