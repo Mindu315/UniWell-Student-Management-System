@@ -8,6 +8,7 @@ import Navbar from '../components/Navbar';
 import FlashcardForm from '../components/FlashcardForm';
 import FlashcardViewer from '../components/FlashcardViewer';
 import { flashcardAPI } from '../api';
+import Swal from 'sweetalert2'
 
 const Flashcards = () => {
   const [flashcards, setFlashcards] = useState([]);
@@ -19,6 +20,7 @@ const Flashcards = () => {
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState('');
   const [formSuccess, setFormSuccess] = useState('');
+  const [isEmptyForm,setEmptyForm]=useState(false);
 
   const [editingFlashcard, setEditingFlashcard] = useState(null);
 
@@ -62,7 +64,12 @@ const Flashcards = () => {
       } else {
         const response = await flashcardAPI.createFlashcard(values);
         if (response.data.success) {
-          setFormSuccess('Flashcard added successfully! 🎉');
+          Swal.fire({
+            title: "Success",
+            text: "Flashcard Created !",
+            icon: "success"
+          });
+          setEmptyForm(true);
         }
       }
 
@@ -88,17 +95,34 @@ const Flashcards = () => {
   };
 
   const handleDelete = async (id) => {
-    const ok = window.confirm('Delete this flashcard?');
-    if (!ok) return;
+    const confirmed=await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    })
+
+    if(!confirmed.isConfirmed){
+      return;
+    }
 
     setFormError('');
     setFormSuccess('');
     setSaving(true);
+
     try {
       const response = await flashcardAPI.deleteFlashcard(id);
       if (response.data.success) {
-        setFormSuccess('Flashcard deleted successfully.');
+        await Swal.fire({
+            title: "Deleted!",
+            text: "Flashcard has been deleted.",
+            icon: "success"
+          });
       }
+    
 
       if (editingFlashcard?._id === id) setEditingFlashcard(null);
       await refresh();
@@ -128,6 +152,7 @@ const Flashcards = () => {
             success={formSuccess}
             onSubmit={handleSubmit}
             onCancel={handleCancel}
+            isEmptyForm={isEmptyForm}
           />
 
           <div className="flashcards-right">

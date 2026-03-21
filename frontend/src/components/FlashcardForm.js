@@ -4,6 +4,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2'
 
 const emptyValues = {
   subject: '',
@@ -18,17 +19,21 @@ const FlashcardForm = ({
   error = '',
   success = '',
   onSubmit,
-  onCancel
+  onCancel,
+  isEmptyForm
 }) => {
   const [formData, setFormData] = useState(emptyValues);
 
   useEffect(() => {
+    if(!isEmptyForm){
     setFormData({
       subject: initialData?.subject ?? '',
       question: initialData?.question ?? '',
       answer: initialData?.answer ?? ''
-    });
-  }, [initialData]);
+    })}else{
+      setFormData(emptyValues);
+    };
+  }, [initialData,isEmptyForm]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,6 +41,25 @@ const FlashcardForm = ({
   };
 
   const handleSubmit = (e) => {
+    if(formData.subject==''){
+      Swal.fire({
+        title: "Error",
+        text: "Enter subject name",
+        icon: "error"
+      });
+    }else if(formData.question==''){
+      Swal.fire({
+        title: "Error",
+        text: "Enter Question",
+        icon: "error"
+      });
+    }else if(formData.answer==''){
+      Swal.fire({
+        title: "Error",
+        text: "Enter Answer",
+        icon: "error"
+      });
+    }
     e.preventDefault();
     onSubmit(formData);
   };
@@ -57,7 +81,6 @@ const FlashcardForm = ({
             name="subject"
             value={formData.subject}
             onChange={handleChange}
-            required
             placeholder="e.g. Biology"
           />
         </div>
@@ -68,7 +91,6 @@ const FlashcardForm = ({
             name="question"
             value={formData.question}
             onChange={handleChange}
-            required
             placeholder="Write the question..."
             rows={4}
           />
@@ -80,7 +102,6 @@ const FlashcardForm = ({
             name="answer"
             value={formData.answer}
             onChange={handleChange}
-            required
             placeholder="Write the answer..."
             rows={4}
           />
