@@ -1795,3 +1795,124 @@ body {
     height: 205px;
   }
 }
+
+/* ========== GPA App Shell (Sidebar + Content) ========== */
+.gpa-app-shell {
+  display: flex;
+  min-height: 100vh;
+  background: #F7F9FB;
+}
+
+.gpa-sidebar-shell {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width, 280px);
+  z-index: 120;
+}
+
+.gpa-sidebar-shell .dashboard-sidebar {
+  height: 100%;
+  width: 100%;
+  border-radius: 0 24px 24px 0;
+  background: var(--sidebar-gradient, linear-gradient(180deg, #123B6D, #0F7B74));
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 8px 0 32px rgba(10, 25, 50, 0.18);
+  padding: 1.4rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  overflow-y: auto;
+}
+
+.gpa-main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width, 280px);
+  min-height: 100vh;
+}
+
+/* Mobile Toggle Button */
+.gpa-mobile-toggle {
+  display: none;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 130;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(30, 58, 95, 0.15);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  color: #1C2A39;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.gpa-mobile-toggle:hover {
+  background: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Sidebar Overlay for Mobile */
+.gpa-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 14, 35, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 115;
+  animation: fadeInOverlay 0.25s ease;
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* "Soon" Badge for disabled sidebar items */
+.sidebar-soon-badge {
+  margin-left: auto;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Responsive: Tablet & Below */
+@media (max-width: 1024px) {
+  .gpa-sidebar-shell {
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .gpa-sidebar-shell.is-open {
+    transform: translateX(0);
+  }
+
+  .gpa-sidebar-shell .dashboard-sidebar {
+    border-radius: 0;
+  }
+
+  .gpa-main-content {
+    margin-left: 0;
+  }
+
+  .gpa-mobile-toggle {
+    display: inline-flex;
+  }
+}
+
+/* Responsive: Small screens */
+@media (max-width: 768px) {
+  .gpa-sidebar-shell {
+    width: 270px;
+  }
+}
