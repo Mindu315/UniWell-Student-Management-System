@@ -17,7 +17,7 @@ const CalculatorDashboard = () => {
     }
   });
 
-  // Persist grades to sessionStorage whenever they change
+  // Persist grades to sessionStorage whenever they change new
   useEffect(() => {
     try {
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(selectedGrades));
