@@ -11,6 +11,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import Navbar from '../components/Navbar';
 import { wellbeingAPI } from '../api';
+import lotusImage from '../assets/Lotus.png';
 import '../css/StressManagementPage.css';
 
 const scaleLabels = {
@@ -111,23 +112,19 @@ const awarenessTips = [
 const metricFields = [
   {
     key: 'energy',
-    title: 'Energy Level',
-    helper: '1 = Very Low, 5 = Excellent'
+    title: 'Energy Level'
   },
   {
     key: 'sleep',
-    title: 'Sleep Quality',
-    helper: '1 = Very Poor, 5 = Excellent'
+    title: 'Sleep Quality'
   },
   {
     key: 'focus',
-    title: 'Focus Level',
-    helper: '1 = Very Low, 5 = Excellent'
+    title: 'Focus Level'
   },
   {
     key: 'stress',
-    title: 'Stress Level',
-    helper: '1 = Very Low, 5 = Very High'
+    title: 'Stress Level'
   }
 ];
 
@@ -345,11 +342,17 @@ const StressManagementPage = () => {
             tension: 0.35,
             borderWidth: 3,
             borderColor: '#2f6db2',
-            pointRadius: (context) => (Number.isFinite(context.raw) ? 4 : 0),
-            pointHoverRadius: (context) => (Number.isFinite(context.raw) ? 6 : 0),
-            pointBackgroundColor: '#ffffff',
-            pointBorderColor: '#1f5f9f',
-            pointBorderWidth: 2,
+            pointRadius: (context) => (Number.isFinite(context.raw) ? 7 : 0),
+            pointHoverRadius: (context) => (Number.isFinite(context.raw) ? 9 : 0),
+            pointBackgroundColor: (context) => (
+              Number(context.raw) >= 4 ? '#1faa59' : '#d93025'
+            ),
+            pointHoverBackgroundColor: (context) => (
+              Number(context.raw) >= 4 ? '#159347' : '#b3261e'
+            ),
+            pointBorderColor: '#ffffff',
+            pointHoverBorderColor: '#ffffff',
+            pointBorderWidth: 2.6,
             fill: true,
             backgroundColor: (context) => {
               const { chart } = context;
@@ -477,7 +480,7 @@ const StressManagementPage = () => {
       <div className="container dashboard-main stress-page">
         <section className="stress-header-card">
           <div>
-            <p className="stress-breadcrumb">UniWell / Stress & Wellbeing</p>
+            <p className="stress-breadcrumb">UniWell</p>
             <h1>Stress Management &amp; Wellbeing Awareness</h1>
             <p>
               Track your daily wellbeing, understand your stress status, and receive supportive
@@ -485,7 +488,7 @@ const StressManagementPage = () => {
             </p>
           </div>
           <div className="stress-header-visual" aria-hidden="true">
-            <span>SM</span>
+            <img src={lotusImage} alt="" className="stress-header-visual-image" />
             <p>Daily Care</p>
           </div>
         </section>
@@ -522,7 +525,6 @@ const StressManagementPage = () => {
           <article className="stress-block-card stress-checkin-card">
             <div className="stress-block-head">
               <h2>Daily Wellbeing Check-In</h2>
-              <p>Use the 1-5 scale to describe today.</p>
             </div>
 
             <form onSubmit={handleSubmit} className="stress-checkin-form">
@@ -530,7 +532,6 @@ const StressManagementPage = () => {
                 <div key={field.key} className="stress-rating-group">
                   <div className="stress-rating-label-row">
                     <label>{field.title}</label>
-                    <span>{field.helper}</span>
                   </div>
 
                   <div className="stress-rating-options" role="group" aria-label={field.title}>
@@ -579,7 +580,6 @@ const StressManagementPage = () => {
             <article className="stress-block-card stress-result-card">
               <div className="stress-block-head">
                 <h2>Wellbeing Result</h2>
-                <p>Latest assessment based on your check-in.</p>
               </div>
 
               {latestResult ? (
@@ -629,7 +629,7 @@ const StressManagementPage = () => {
 
         <section className="stress-condition-grid">
           {conditionCards.map((card) => (
-            <article key={card.key} className="stress-condition-card">
+            <article key={card.key} className={`stress-condition-card condition-card-${card.key}`}>
               <p className={`stress-condition-pill ${conditionConfig[card.key].badgeClass}`}>{card.title}</p>
               <p>{card.description}</p>
             </article>
