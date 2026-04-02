@@ -64,6 +64,12 @@ const Register = () => {
     e.preventDefault();
     setError('');
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      setError('Please provide a valid email address');
+      return;
+    }
+
     // Validation
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');

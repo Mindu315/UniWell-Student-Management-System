@@ -1,5 +1,12 @@
 .stress-page {
   gap: 1.2rem;
+  --stress-blue-900: #123b78;
+  --stress-blue-800: #1b4f95;
+  --stress-blue-700: #2f6db2;
+  --stress-blue-300: #c7daf5;
+  --stress-blue-100: #eaf2ff;
+  --stress-blue-050: #f4f8ff;
+  --stress-blue-muted: #46668f;
 }
 
 .stress-success-overlay {
@@ -55,8 +62,8 @@
 .stress-tips-banner,
 .stress-condition-card,
 .stress-summary-card {
-  background: var(--card-bg);
-  border: 1px solid var(--borders);
+  background: var(--stress-blue-050);
+  border: 1px solid var(--stress-blue-300);
   border-radius: 24px;
   box-shadow: 0 8px 22px rgba(28, 61, 110, 0.08);
 }
@@ -67,22 +74,24 @@
   align-items: center;
   gap: 1rem;
   padding: 1.5rem 1.6rem;
+  background: linear-gradient(135deg, #133563, #5a83b1 55%, #32a964);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .stress-header-card h1 {
-  color: var(--primary-text);
+  color: #ffffff;
   font-size: clamp(1.6rem, 2.6vw, 2.2rem);
   line-height: 1.15;
   margin-bottom: 0.45rem;
 }
 
 .stress-header-card p {
-  color: #5f6f8e;
+  color: rgba(255, 255, 255, 0.92);
   max-width: 800px;
 }
 
 .stress-breadcrumb {
-  color: var(--secondary-text) !important;
+  color: rgba(255, 255, 255, 0.82) !important;
   font-size: 0.8rem;
   margin-bottom: 0.35rem;
 }
@@ -92,7 +101,7 @@
   min-height: 140px;
   border-radius: 22px;
   border: 1px solid #dbe6f5;
-  background: linear-gradient(135deg, rgba(63, 179, 107, 0.16), rgba(47, 109, 178, 0.14));
+  background: linear-gradient(135deg, rgba(47, 109, 178, 0.2), rgba(47, 109, 178, 0.08));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -118,11 +127,12 @@
 .stress-summary-card {
   padding: 1.1rem;
   min-height: 155px;
+  box-shadow: 0 10px 24px rgba(20, 63, 124, 0.14);
 }
 
 .card-kicker {
   font-size: 0.78rem;
-  color: #6c7a97;
+  color: var(--stress-blue-800);
   letter-spacing: 0.02em;
   text-transform: uppercase;
   font-weight: 700;
@@ -131,29 +141,33 @@
 .stress-summary-card h3 {
   margin-top: 0.75rem;
   font-size: 1.3rem;
-  color: #1f2a44;
+  color: var(--stress-blue-900);
 }
 
 .card-meta {
   margin-top: 0.75rem;
   font-size: 0.86rem;
-  color: #697a95;
+  color: var(--stress-blue-muted);
 }
 
 .stress-summary-status {
-  background: #eef8f1;
+  background: #ddf5e7;
+  border-color: #cceada;
 }
 
 .stress-summary-score {
-  background: #eef5ff;
+  background: #d6e1f3;
+  border-color: #cadcf7;
 }
 
 .stress-summary-condition {
-  background: #fff4ea;
+  background: #d8ebf5;
+  border-color: #cde8f8;
 }
 
 .stress-summary-weekly {
-  background: #f4f0ff;
+  background: #e5e1f9;
+  border-color: #ded8ff;
 }
 
 .stress-main-grid {
@@ -166,17 +180,29 @@
   padding: 1.2rem;
 }
 
+.stress-checkin-card {
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  box-shadow: 0 12px 28px rgba(24, 55, 102, 0.14);
+}
+
+.stress-checkin-card {
+  background: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 14px 28px rgba(18, 59, 120, 0.12);
+}
+
 .stress-block-head {
   margin-bottom: 1rem;
 }
 
 .stress-block-head h2 {
-  color: #1f2a44;
+  color: var(--stress-blue-900);
   font-size: 1.12rem;
 }
 
 .stress-block-head p {
-  color: #667791;
+  color: var(--stress-blue-muted);
   font-size: 0.9rem;
   margin-top: 0.25rem;
 }
@@ -202,12 +228,12 @@
 
 .stress-rating-label-row label {
   font-weight: 700;
-  color: #1f2a44;
+  color: var(--stress-blue-900);
 }
 
 .stress-rating-label-row span {
   font-size: 0.82rem;
-  color: #6c7a94;
+  color: var(--stress-blue-muted);
 }
 
 .stress-rating-options {
@@ -237,7 +263,7 @@
 
 .stress-rate-btn.is-active {
   border-color: #2f6db2;
-  background: linear-gradient(135deg, rgba(63, 179, 107, 0.14), rgba(47, 109, 178, 0.14));
+  background: linear-gradient(135deg, rgba(47, 109, 178, 0.2), rgba(47, 109, 178, 0.1));
   box-shadow: 0 6px 16px rgba(47, 109, 178, 0.16);
 }
 
@@ -259,7 +285,7 @@
 
 .stress-note-group label {
   font-weight: 700;
-  color: #1f2a44;
+  color: var(--stress-blue-900);
 }
 
 .stress-note-group textarea {
@@ -287,6 +313,22 @@
   gap: 1rem;
 }
 
+.stress-result-card {
+  background: linear-gradient(135deg, #eef7ff, #ecfbf2);
+  border-color: #ffffff;
+  box-shadow: 0 14px 28px rgba(18, 59, 120, 0.12);
+}
+
+.stress-result-card {
+  background: linear-gradient(135deg, #eaf4ff, #eefcf3);
+}
+
+.stress-feedback-card {
+  background: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 14px 28px rgba(18, 59, 120, 0.12);
+}
+
 .stress-result-body {
   display: flex;
   flex-direction: column;
@@ -295,13 +337,13 @@
 
 .stress-score-bubble {
   border-radius: 18px;
-  background: linear-gradient(135deg, rgba(63, 179, 107, 0.18), rgba(47, 109, 178, 0.17));
+  background: linear-gradient(135deg, rgba(199, 221, 247, 0.533), rgba(48, 100, 160, 0.797));
   border: 1px solid #d7e2f2;
   padding: 0.8rem;
 }
 
 .stress-score-bubble p {
-  color: #556885;
+  color: #1c1e20;
   font-size: 0.82rem;
 }
 
@@ -352,7 +394,24 @@
 .stress-result-date,
 .stress-feedback-message,
 .stress-empty-state {
-  color: #5d6d89;
+  color: var(--stress-blue-muted);
+}
+
+.stress-result-text {
+  color: #000000;
+  background: #fff7cc;
+  border-left: 4px solid #f2c94c;
+  border-radius: 10px;
+  padding: 0.55rem 0.7rem;
+  font-weight: 600;
+}
+
+.stress-condition-badge.condition-critical {
+  background: #ffdede;
+  color: #8f0f0f;
+  border-color: #eb8f8f;
+  box-shadow: 0 0 0 3px rgba(180, 35, 35, 0.18);
+  font-weight: 800;
 }
 
 .stress-feedback-body ul,
@@ -365,7 +424,13 @@
 
 .stress-feedback-body li,
 .stress-tips-banner li {
-  color: #3f5274;
+  color: #335684;
+}
+
+.stress-feedback-message,
+.stress-feedback-body li {
+  color: #010c1e;
+  font-weight: 700;
 }
 
 .stress-condition-grid {
@@ -379,7 +444,7 @@
 }
 
 .stress-condition-card p {
-  color: #5d6d89;
+  color: var(--stress-blue-muted);
 }
 
 .stress-condition-card .stress-condition-pill {
@@ -410,23 +475,23 @@
 }
 
 .stress-table-wrap th {
-  color: #5b6d88;
+  color: var(--stress-blue-800);
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
 .stress-table-wrap td {
-  color: #1f2a44;
+  color: var(--stress-blue-900);
 }
 
 .stress-table-empty {
-  color: #6a7b97;
+  color: var(--stress-blue-muted);
   text-align: center;
 }
 
 .stress-insights-card {
-  background: linear-gradient(135deg, rgba(47, 109, 178, 0.06), rgba(63, 179, 107, 0.06));
+  background: linear-gradient(135deg, rgba(47, 109, 178, 0.1), rgba(47, 109, 178, 0.04));
 }
 
 .stress-insight-metrics {
@@ -444,13 +509,13 @@
 
 .stress-insight-metrics p {
   font-size: 0.8rem;
-  color: #667791;
+  color: var(--stress-blue-muted);
 }
 
 .stress-insight-metrics h4 {
   margin-top: 0.25rem;
   font-size: 1.2rem;
-  color: #1f2a44;
+  color: var(--stress-blue-900);
 }
 
 .stress-mini-trend {
@@ -483,7 +548,7 @@
 
 .trend-item p {
   font-size: 0.75rem;
-  color: #667791;
+  color: var(--stress-blue-muted);
 }
 
 .stress-samples-grid {
@@ -500,13 +565,13 @@
 }
 
 .stress-sample-item h4 {
-  color: #1f2a44;
+  color: var(--stress-blue-900);
   font-size: 0.98rem;
   margin-bottom: 0.5rem;
 }
 
 .stress-sample-item p {
-  color: #566884;
+  color: var(--stress-blue-muted);
   font-size: 0.86rem;
   line-height: 1.5;
 }
@@ -516,7 +581,7 @@
 }
 
 .stress-note-templates p {
-  color: #5c6f8c;
+  color: var(--stress-blue-muted);
   font-size: 0.9rem;
 }
 
@@ -545,7 +610,7 @@
 
 .stress-tips-banner {
   padding: 1.2rem;
-  background: linear-gradient(135deg, rgba(63, 179, 107, 0.1), rgba(47, 109, 178, 0.1));
+  background: linear-gradient(135deg, rgba(47, 109, 178, 0.14), rgba(47, 109, 178, 0.06));
 }
 
 @media (max-width: 1320px) {

@@ -384,7 +384,7 @@ const StressManagementPage = () => {
           <article className="stress-summary-card stress-summary-score">
             <p className="card-kicker">Latest Wellbeing Score</p>
             <h3>{latestScore}</h3>
-            <p className="card-meta">Score = (Energy + Sleep + Focus) - (Stress x 2)</p>
+            <p className="card-meta">Your latest wellbeing score reflects your recent energy, sleep, focus, and stress levels</p>
           </article>
 
           <article className="stress-summary-card stress-summary-condition">
@@ -401,7 +401,7 @@ const StressManagementPage = () => {
         </section>
 
         <section className="stress-main-grid">
-          <article className="stress-block-card">
+          <article className="stress-block-card stress-checkin-card">
             <div className="stress-block-head">
               <h2>Daily Wellbeing Check-In</h2>
               <p>Use the 1-5 scale to describe today.</p>
