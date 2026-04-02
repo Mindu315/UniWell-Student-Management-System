@@ -1,4 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  Filler,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Tooltip
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
 import Navbar from '../components/Navbar';
 import { wellbeingAPI } from '../api';
 import '../css/StressManagementPage.css';
@@ -98,31 +108,6 @@ const awarenessTips = [
   'Speak to trusted people or student support when you feel overwhelmed.'
 ];
 
-const noteTemplates = [
-  'Deadline pressure from multiple assignments this week.',
-  'Slept late after exam prep and felt low energy in lectures.',
-  'Group project conflict increased stress today.',
-  'Felt better after a short evening walk and proper dinner.'
-];
-
-const realWorldSamples = [
-  {
-    title: 'Exam Week Pressure',
-    context: 'You are preparing for two exams and sleeping less than usual.',
-    suggestion: 'Use a 45-minute focus block + 10-minute recovery cycle and protect sleep time.'
-  },
-  {
-    title: 'Group Project Tension',
-    context: 'Team communication is unclear and deadlines feel rushed.',
-    suggestion: 'Set a short team sync, split tasks clearly, and confirm one realistic timeline.'
-  },
-  {
-    title: 'Burnout Warning Signs',
-    context: 'You feel tired, irritable, and less motivated for classes.',
-    suggestion: 'Reduce low-priority tasks for 24 hours and focus on sleep, hydration, and support.'
-  }
-];
-
 const metricFields = [
   {
     key: 'energy',
@@ -154,6 +139,18 @@ const defaultForm = {
   note: ''
 };
 
+const SCORE_MIN = -7;
+const SCORE_MAX = 13;
+
+ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Filler);
+
+const getLocalDayKey = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 const formatDate = (isoDate) => {
   const date = new Date(isoDate);
   return date.toLocaleDateString('en-US', {
@@ -181,6 +178,7 @@ const StressManagementPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [error, setError] = useState('');
+  const [activeInterface, setActiveInterface] = useState('daily');
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -265,23 +263,15 @@ const StressManagementPage = () => {
 
   const weeklyInsights = useMemo(() => {
     const now = new Date();
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(now.getDate() - 6);
+    now.setHours(23, 59, 59, 999);
+    const sevenDaysAgo = new Date(now);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
 
     const lastWeekEntries = history.filter((entry) => {
       const entryDate = new Date(entry.submittedAt);
       return entryDate >= sevenDaysAgo && entryDate <= now;
     });
-
-    if (lastWeekEntries.length === 0) {
-      return {
-        avgEnergy: '--',
-        avgSleep: '--',
-        avgFocus: '--',
-        avgStress: '--',
-        scoreTrend: []
-      };
-    }
 
     const sum = lastWeekEntries.reduce(
       (acc, entry) => {
@@ -294,21 +284,156 @@ const StressManagementPage = () => {
       { energy: 0, sleep: 0, focus: 0, stress: 0 }
     );
 
-    const sortedAsc = [...lastWeekEntries].sort(
-      (a, b) => new Date(a.submittedAt) - new Date(b.submittedAt)
-    );
+    const scoreBuckets = lastWeekEntries.reduce((acc, entry) => {
+      const date = new Date(entry.submittedAt);
+      const key = getLocalDayKey(date);
+      const score = Number(entry.score);
+
+      if (!Number.isFinite(score)) {
+        return acc;
+      }
+
+      if (!acc[key]) {
+        acc[key] = { total: 0, count: 0 };
+      }
+
+      acc[key].total += score;
+      acc[key].count += 1;
+
+      return acc;
+    }, {});
+
+    const scoreTrend = Array.from({ length: 7 }, (_, offset) => {
+      const dayDate = new Date(sevenDaysAgo);
+      dayDate.setDate(sevenDaysAgo.getDate() + offset);
+
+      const key = getLocalDayKey(dayDate);
+      const bucket = scoreBuckets[key];
+      const score = bucket ? Number((bucket.total / bucket.count).toFixed(1)) : null;
+
+      return {
+        key,
+        label: dayDate.toLocaleDateString('en-US', { weekday: 'short' }),
+        dateLabel: dayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        score,
+        hasData: score !== null
+      };
+    });
 
     return {
-      avgEnergy: (sum.energy / lastWeekEntries.length).toFixed(1),
-      avgSleep: (sum.sleep / lastWeekEntries.length).toFixed(1),
-      avgFocus: (sum.focus / lastWeekEntries.length).toFixed(1),
-      avgStress: (sum.stress / lastWeekEntries.length).toFixed(1),
-      scoreTrend: sortedAsc.slice(-7).map((entry) => ({
-        label: new Date(entry.submittedAt).toLocaleDateString('en-US', { weekday: 'short' }),
-        score: Number(entry.score)
-      }))
+      avgEnergy: lastWeekEntries.length ? (sum.energy / lastWeekEntries.length).toFixed(1) : '--',
+      avgSleep: lastWeekEntries.length ? (sum.sleep / lastWeekEntries.length).toFixed(1) : '--',
+      avgFocus: lastWeekEntries.length ? (sum.focus / lastWeekEntries.length).toFixed(1) : '--',
+      avgStress: lastWeekEntries.length ? (sum.stress / lastWeekEntries.length).toFixed(1) : '--',
+      scoreTrend
     };
   }, [history]);
+
+  const weeklyTrendChart = useMemo(() => {
+    const points = weeklyInsights.scoreTrend;
+    const hasAnyData = points.some((point) => point.hasData);
+
+    return {
+      hasAnyData,
+      data: {
+        labels: points.map((point) => point.label),
+        datasets: [
+          {
+            label: 'Wellbeing Score',
+            data: points.map((point) => (point.hasData ? point.score : null)),
+            spanGaps: false,
+            tension: 0.35,
+            borderWidth: 3,
+            borderColor: '#2f6db2',
+            pointRadius: (context) => (Number.isFinite(context.raw) ? 4 : 0),
+            pointHoverRadius: (context) => (Number.isFinite(context.raw) ? 6 : 0),
+            pointBackgroundColor: '#ffffff',
+            pointBorderColor: '#1f5f9f',
+            pointBorderWidth: 2,
+            fill: true,
+            backgroundColor: (context) => {
+              const { chart } = context;
+              const { ctx, chartArea } = chart;
+
+              if (!chartArea) {
+                return 'rgba(47, 109, 178, 0.24)';
+              }
+
+              const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+              gradient.addColorStop(0, 'rgba(47, 109, 178, 0.3)');
+              gradient.addColorStop(1, 'rgba(47, 109, 178, 0.04)');
+              return gradient;
+            }
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        resizeDelay: 120,
+        animation: {
+          duration: 550,
+          easing: 'easeOutQuart'
+        },
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            backgroundColor: '#143860',
+            titleColor: '#ffffff',
+            bodyColor: '#ffffff',
+            padding: 10,
+            displayColors: false,
+            callbacks: {
+              title: (items) => {
+                const idx = items?.[0]?.dataIndex ?? 0;
+                return weeklyInsights.scoreTrend[idx]?.dateLabel || '';
+              },
+              label: (context) => (
+                Number.isFinite(context.parsed.y) ? `Score: ${context.parsed.y}` : 'No check-in'
+              )
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false,
+              drawBorder: false
+            },
+            ticks: {
+              color: '#2f4f7b',
+              font: {
+                size: 11,
+                weight: 700
+              }
+            }
+          },
+          y: {
+            min: SCORE_MIN,
+            max: SCORE_MAX,
+            ticks: {
+              stepSize: 5,
+              color: '#6984ad',
+              font: {
+                size: 10,
+                weight: 700
+              }
+            },
+            grid: {
+              color: 'rgba(125, 153, 190, 0.25)',
+              drawBorder: false
+            }
+          }
+        }
+      }
+    };
+  }, [weeklyInsights.scoreTrend]);
 
   const latestScore = latestResult?.score ?? '--';
   const currentCondition = latestResult?.conditionLabel || 'No data yet';
@@ -317,13 +442,6 @@ const StressManagementPage = () => {
     : 'Pending Check-In';
 
   const feedbackData = latestResult ? getConditionMeta(latestResult.conditionKey) : null;
-
-  const applyNoteTemplate = (text) => {
-    setFormData((prev) => ({
-      ...prev,
-      note: text
-    }));
-  };
 
   if (loading) {
     return (
@@ -509,48 +627,6 @@ const StressManagementPage = () => {
           </div>
         </section>
 
-        <section className="stress-block-card stress-insights-card">
-          <div className="stress-block-head">
-            <h2>Weekly Insight Snapshot</h2>
-            <p>Simple analytics to help you spot patterns early.</p>
-          </div>
-
-          <div className="stress-insight-metrics">
-            <article>
-              <p>Avg Energy</p>
-              <h4>{weeklyInsights.avgEnergy}</h4>
-            </article>
-            <article>
-              <p>Avg Sleep</p>
-              <h4>{weeklyInsights.avgSleep}</h4>
-            </article>
-            <article>
-              <p>Avg Focus</p>
-              <h4>{weeklyInsights.avgFocus}</h4>
-            </article>
-            <article>
-              <p>Avg Stress</p>
-              <h4>{weeklyInsights.avgStress}</h4>
-            </article>
-          </div>
-
-          <div className="stress-mini-trend">
-            {weeklyInsights.scoreTrend.length === 0 ? (
-              <p className="stress-empty-state">Your score trend will appear after a few check-ins.</p>
-            ) : (
-              weeklyInsights.scoreTrend.map((point, index) => {
-                const height = Math.max(18, Math.min(100, ((point.score + 5) / 20) * 100));
-                return (
-                  <div key={`${point.label}-${index}`} className="trend-item">
-                    <span className="trend-bar" style={{ height: `${height}%` }} />
-                    <p>{point.label}</p>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </section>
-
         <section className="stress-condition-grid">
           {conditionCards.map((card) => (
             <article key={card.key} className="stress-condition-card">
@@ -560,98 +636,126 @@ const StressManagementPage = () => {
           ))}
         </section>
 
-        <section className="stress-block-card stress-history-card">
-          <div className="stress-block-head">
-            <h2>Wellbeing History / Trend</h2>
-            <p>Review your previous records and identify patterns.</p>
-          </div>
+        <section className="stress-interface-switch" aria-label="Stress Management Interfaces">
+          <button
+            type="button"
+            className={activeInterface === 'daily' ? 'stress-interface-btn is-active' : 'stress-interface-btn'}
+            onClick={() => setActiveInterface('daily')}
+          >
+            Daily Check-In Interface
+          </button>
+          <button
+            type="button"
+            className={activeInterface === 'insights' ? 'stress-interface-btn is-active' : 'stress-interface-btn'}
+            onClick={() => setActiveInterface('insights')}
+          >
+            Insights &amp; Tips Interface
+          </button>
+        </section>
 
-          <div className="stress-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Energy</th>
-                  <th>Sleep</th>
-                  <th>Focus</th>
-                  <th>Stress</th>
-                  <th>Score</th>
-                  <th>Condition</th>
-                </tr>
-              </thead>
-              <tbody>
-                {history.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="stress-table-empty">
-                      No records yet. Your submitted check-ins will appear here.
-                    </td>
-                  </tr>
-                ) : (
-                  history.slice(0, 10).map((entry) => (
-                    <tr key={entry._id || entry.id}>
-                      <td>{formatDate(entry.submittedAt)}</td>
-                      <td>{entry.energy}</td>
-                      <td>{entry.sleep}</td>
-                      <td>{entry.focus}</td>
-                      <td>{entry.stress}</td>
-                      <td>{entry.score}</td>
-                      <td>
-                        <span className={`stress-table-condition ${getConditionMeta(entry.conditionKey).badgeClass}`}>
-                          {entry.conditionLabel}
-                        </span>
-                      </td>
+        {activeInterface === 'insights' && (
+          <div className="stress-secondary-stack">
+            <section className="stress-block-card stress-insights-card">
+              <div className="stress-block-head">
+                <h2>Weekly Insight Snapshot</h2>
+                <p>Simple analytics to help you spot patterns early.</p>
+              </div>
+
+              <div className="stress-insight-metrics">
+                <article>
+                  <p>Avg Energy</p>
+                  <h4>{weeklyInsights.avgEnergy}</h4>
+                </article>
+                <article>
+                  <p>Avg Sleep</p>
+                  <h4>{weeklyInsights.avgSleep}</h4>
+                </article>
+                <article>
+                  <p>Avg Focus</p>
+                  <h4>{weeklyInsights.avgFocus}</h4>
+                </article>
+                <article>
+                  <p>Avg Stress</p>
+                  <h4>{weeklyInsights.avgStress}</h4>
+                </article>
+              </div>
+
+              <div className="stress-mini-trend">
+                <div className="stress-line-chart">
+                  <Line
+                    data={weeklyTrendChart.data}
+                    options={weeklyTrendChart.options}
+                    aria-label="Seven day wellbeing score trend"
+                  />
+
+                  {!weeklyTrendChart.hasAnyData && (
+                    <p className="trend-no-data">No check-ins available for this 7-day window yet.</p>
+                  )}
+                </div>
+              </div>
+            </section>
+
+            <section className="stress-block-card stress-history-card">
+              <div className="stress-block-head">
+                <h2>Wellbeing History / Trend</h2>
+                <p>Review your previous records and identify patterns.</p>
+              </div>
+
+              <div className="stress-table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Energy</th>
+                      <th>Sleep</th>
+                      <th>Focus</th>
+                      <th>Stress</th>
+                      <th>Score</th>
+                      <th>Condition</th>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </section>
+                  </thead>
+                  <tbody>
+                    {history.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="stress-table-empty">
+                          No records yet. Your submitted check-ins will appear here.
+                        </td>
+                      </tr>
+                    ) : (
+                      history.slice(0, 10).map((entry) => (
+                        <tr key={entry._id || entry.id}>
+                          <td>{formatDate(entry.submittedAt)}</td>
+                          <td>{entry.energy}</td>
+                          <td>{entry.sleep}</td>
+                          <td>{entry.focus}</td>
+                          <td>{entry.stress}</td>
+                          <td>{entry.score}</td>
+                          <td>
+                            <span className={`stress-table-condition ${getConditionMeta(entry.conditionKey).badgeClass}`}>
+                              {entry.conditionLabel}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
 
-        <section className="stress-block-card stress-samples-card">
-          <div className="stress-block-head">
-            <h2>Real-World Student Scenarios</h2>
-            <p>Examples based on common university stress situations.</p>
+            <section className="stress-tips-banner">
+              <div className="stress-block-head">
+                <h2>Wellbeing Tips &amp; Awareness</h2>
+                <p>Healthy routines can protect both mental wellbeing and academic performance.</p>
+              </div>
+              <ul>
+                {awarenessTips.map((tip) => (
+                  <li key={tip}>{tip}</li>
+                ))}
+              </ul>
+            </section>
           </div>
-
-          <div className="stress-samples-grid">
-            {realWorldSamples.map((sample) => (
-              <article key={sample.title} className="stress-sample-item">
-                <h4>{sample.title}</h4>
-                <p><strong>Situation:</strong> {sample.context}</p>
-                <p><strong>Helpful Response:</strong> {sample.suggestion}</p>
-              </article>
-            ))}
-          </div>
-
-          <div className="stress-note-templates">
-            <p>Quick note templates (tap to use):</p>
-            <div className="template-chip-wrap">
-              {noteTemplates.map((template) => (
-                <button
-                  key={template}
-                  type="button"
-                  className="template-chip"
-                  onClick={() => applyNoteTemplate(template)}
-                >
-                  {template}
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="stress-tips-banner">
-          <div className="stress-block-head">
-            <h2>Wellbeing Tips &amp; Awareness</h2>
-            <p>Healthy routines can protect both mental wellbeing and academic performance.</p>
-          </div>
-          <ul>
-            {awarenessTips.map((tip) => (
-              <li key={tip}>{tip}</li>
-            ))}
-          </ul>
-        </section>
+        )}
       </div>
     </div>
   );

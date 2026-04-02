@@ -451,6 +451,41 @@
   margin-bottom: 0.65rem;
 }
 
+.stress-interface-switch {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.stress-interface-btn {
+  border: 1px solid #c6d8f3;
+  background: #ffffff;
+  color: #2f4f7b;
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  font-weight: 700;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stress-interface-btn:hover {
+  border-color: #8fb1df;
+  transform: translateY(-1px);
+}
+
+.stress-interface-btn.is-active {
+  color: #ffffff;
+  border-color: transparent;
+  background: linear-gradient(135deg, #1b4f95, #2f6db2);
+  box-shadow: 0 8px 18px rgba(27, 79, 149, 0.24);
+}
+
+.stress-secondary-stack {
+  display: grid;
+  gap: 1rem;
+}
+
 .stress-history-card {
   overflow: hidden;
 }
@@ -520,92 +555,32 @@
 
 .stress-mini-trend {
   margin-top: 1rem;
-  border-radius: 16px;
-  border: 1px solid #dce7f6;
-  background: #ffffff;
-  min-height: 150px;
-  padding: 0.9rem;
+  border-radius: 20px;
+  border: 1px solid #d4e3f7;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  height: clamp(320px, 42vh, 440px);
+  padding: 1rem 1rem 0.9rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 10px 24px rgba(28, 61, 110, 0.08);
+  display: block;
+}
+
+.stress-line-chart {
+  height: 100%;
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  align-items: end;
-  gap: 0.5rem;
-}
-
-.trend-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: end;
-  gap: 0.35rem;
-  min-height: 120px;
-}
-
-.trend-bar {
-  width: 100%;
-  border-radius: 999px;
-  background: var(--main-gradient);
-}
-
-.trend-item p {
-  font-size: 0.75rem;
-  color: var(--stress-blue-muted);
-}
-
-.stress-samples-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: 1fr auto;
   gap: 0.8rem;
 }
 
-.stress-sample-item {
-  border-radius: 16px;
-  border: 1px solid #dce7f6;
-  background: #f9fbff;
-  padding: 0.9rem;
+.stress-line-chart canvas {
+  width: 100% !important;
+  height: 100% !important;
 }
 
-.stress-sample-item h4 {
-  color: var(--stress-blue-900);
-  font-size: 0.98rem;
-  margin-bottom: 0.5rem;
-}
-
-.stress-sample-item p {
+.trend-no-data {
+  margin: 0.4rem 0 0;
+  text-align: center;
   color: var(--stress-blue-muted);
-  font-size: 0.86rem;
-  line-height: 1.5;
-}
-
-.stress-note-templates {
-  margin-top: 1rem;
-}
-
-.stress-note-templates p {
-  color: var(--stress-blue-muted);
-  font-size: 0.9rem;
-}
-
-.template-chip-wrap {
-  margin-top: 0.6rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.template-chip {
-  border: 1px solid #cfdcf1;
-  background: #ffffff;
-  color: #31507d;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  padding: 0.5rem 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.template-chip:hover {
-  border-color: #9fb9de;
-  background: #f4f8ff;
+  font-size: 0.84rem;
 }
 
 .stress-tips-banner {
@@ -622,9 +597,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .stress-samples-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 1024px) {
@@ -665,9 +637,13 @@
     grid-template-columns: 1fr;
   }
 
+  .stress-interface-btn {
+    width: 100%;
+    text-align: center;
+  }
+
   .stress-mini-trend {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    min-height: 120px;
+    height: clamp(270px, 38vh, 340px);
   }
 
   .stress-rating-options {
