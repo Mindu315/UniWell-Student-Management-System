@@ -38,7 +38,7 @@ const CalculatorDashboard = () => {
       case 'analyzer':
         return <Analyzer selectedGrades={selectedGrades} />;
       case 'predictor':
-        return <TargetPredictor />;
+        return <TargetPredictor selectedGrades={selectedGrades} />;
       default:
         return null;
     }
