@@ -37,6 +37,8 @@ const connectDB = require('./config/db');
 // Import routes
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const flashcardRoutes = require('./routes/flashcardRoutes');
+const aiQuizRoutes = require('./routes/aiQuizRoutes');
 const wellbeingRoutes = require('./routes/wellbeingRoutes');
 
 // Create Express app
@@ -58,6 +60,8 @@ app.use(cors({
 // Routes
 app.use('/api/auth', authRoutes); // Auth routes (register, login, me)
 app.use('/api/users', userRoutes); // User routes (profile, admin operations)
+app.use('/api/flashcards', flashcardRoutes); // Flashcard CRUD routes (protected)
+app.use('/api/ai-quizzes', aiQuizRoutes); // AI quiz generator routes (protected)
 app.use('/api/wellbeing', wellbeingRoutes); // Wellbeing routes (check-ins)
 
 // Welcome route
@@ -78,6 +82,20 @@ app.get('/', (req, res) => {
         updateUser: 'PUT /api/users/:id (Admin)',
         deleteUser: 'DELETE /api/users/:id (Admin)'
       },
+      flashcards: {
+        create: 'POST /api/flashcards (Protected)',
+        list: 'GET /api/flashcards (Protected)',
+        getById: 'GET /api/flashcards/:id (Protected)',
+        update: 'PUT /api/flashcards/:id (Protected)',
+        remove: 'DELETE /api/flashcards/:id (Protected)'
+      },
+      aiQuizzes: {
+        generate: 'POST /api/ai-quizzes/generate (Protected, multipart/form-data: pdf)',
+        list: 'GET /api/ai-quizzes (Protected)',
+        getById: 'GET /api/ai-quizzes/:id (Protected)',
+        remove: 'DELETE /api/ai-quizzes/:id (Protected)',
+        attempts: 'POST /api/ai-quizzes/:id/attempts (Protected, body: { selectedOptions: number[] })',
+        analytics: 'GET /api/ai-quizzes/analytics (Protected)'
       wellbeing: {
         createCheckIn: 'POST /api/wellbeing/check-ins (Protected)',
         getCheckIns: 'GET /api/wellbeing/check-ins (Protected)'

@@ -11,6 +11,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import AdminUsers from './pages/AdminUsers';
+import Flashcards from './pages/Flashcards';
+import AIQuizzes from './pages/AIQuizzes';
 import StressManagementPage from './pages/StressManagementPage';
 import './styles.css';
 
@@ -58,6 +60,24 @@ function App() {
                 <AdminUsers />
               </ProtectedRoute>
             } 
+          />
+
+          <Route
+            path="/flashcards"
+            element={
+              <ProtectedRoute>
+                <Flashcards />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/ai-quizzes"
+            element={
+              <ProtectedRoute>
+                <AIQuizzes />
+              </ProtectedRoute>
+            }
           />
 
           {/* Catch all - redirect to home */}

@@ -54,6 +54,49 @@ export const userAPI = {
   deleteUser: (id) => api.delete(`/users/${id}`)
 };
 
+// Flashcards API calls
+export const flashcardAPI = {
+  // Create a flashcard for the current user
+  createFlashcard: (data) => api.post('/flashcards', data),
+
+  // Get flashcards for the current user (optional subject filter)
+  getFlashcards: (subject) => {
+    if (subject && typeof subject === 'string' && subject.trim()) {
+      return api.get('/flashcards', { params: { subject } });
+    }
+    return api.get('/flashcards');
+  },
+
+  getFlashcardById: (id) => api.get(`/flashcards/${id}`),
+
+  updateFlashcard: (id, data) => api.put(`/flashcards/${id}`, data),
+
+  deleteFlashcard: (id) => api.delete(`/flashcards/${id}`)
+};
+
+// AI Quizzes API calls
+export const aiQuizAPI = {
+  // Generate a quiz from an uploaded PDF
+  generateQuizFromPdf: (formData) =>
+    api.post('/ai-quizzes/generate', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }),
+
+  // List my saved quizzes
+  getMyQuizzes: () => api.get('/ai-quizzes'),
+
+  // Get a saved quiz
+  getQuizById: (id) => api.get(`/ai-quizzes/${id}`),
+
+  // Delete a quiz
+  deleteQuiz: (id) => api.delete(`/ai-quizzes/${id}`),
+
+  // Submit quiz attempt results (stores correct-answer rate)
+  submitQuizAttempt: (quizId, selectedOptions) =>
+    api.post(`/ai-quizzes/${quizId}/attempts`, { selectedOptions }),
+
+  // Get analytics based on correct-answer rate
+  getQuizAnalytics: () => api.get('/ai-quizzes/analytics')
 // Wellbeing API calls
 export const wellbeingAPI = {
   // Submit a new wellbeing check-in
