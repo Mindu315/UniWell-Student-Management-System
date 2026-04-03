@@ -1,0 +1,362 @@
+[
+  {
+    "moduleCode": "IT1010",
+    "moduleName": "Introduction to Programming",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1020",
+    "moduleName": "Introduction to Computer Systems",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1030",
+    "moduleName": "Mathematics for Computing",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1040",
+    "moduleName": "Communication Skills",
+    "credits": 3,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1050",
+    "moduleName": "Object Oriented Concepts",
+    "credits": 2,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1060",
+    "moduleName": "Software Process Modeling",
+    "credits": 3,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1080",
+    "moduleName": "English for Academic Purposes",
+    "credits": 3,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1090",
+    "moduleName": "Information Systems and Data Modeling",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1100",
+    "moduleName": "Internet and Web Technologies",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2020",
+    "moduleName": "Software Engineering",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2030",
+    "moduleName": "Object Oriented Programming",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2040",
+    "moduleName": "Database Management Systems",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2050",
+    "moduleName": "Computer Networks",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2060",
+    "moduleName": "Operating Systems and System Administration",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2010",
+    "moduleName": "Mobile Application Development",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2070",
+    "moduleName": "Data Structures and Algorithms",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2080",
+    "moduleName": "IT Project",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2090",
+    "moduleName": "Professional Skills",
+    "credits": 2,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2100",
+    "moduleName": "Employability Skills Development - Seminar",
+    "credits": 1,
+    "year": 2,
+    "semester": 2,
+    "isGPA": false,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2110",
+    "moduleName": "Probability and Statistics",
+    "credits": 3,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3011",
+    "moduleName": "Technical Evolution of Multimedia",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3021",
+    "moduleName": "Design Ideation and Creative Communication",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3061",
+    "moduleName": "User Experience Development",
+    "credits": 3,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3081",
+    "moduleName": "Digital Marketing Strategies",
+    "credits": 3,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT3050",
+    "moduleName": "Employability Skills Development - Seminar",
+    "credits": 1,
+    "year": 3,
+    "semester": 1,
+    "isGPA": false,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3031",
+    "moduleName": "3D Modeling and Animation",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3041",
+    "moduleName": "Digital Video Production and Delivery",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3071",
+    "moduleName": "Digital Image Processing",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3091",
+    "moduleName": "Games Technology",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT3110",
+    "moduleName": "Industry Placement",
+    "credits": 8,
+    "year": 3,
+    "semester": 2,
+    "isGPA": false,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT4070",
+    "moduleName": "Preparation for the Professional World",
+    "credits": 2,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4031",
+    "moduleName": "Game Development",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4051",
+    "moduleName": "Trends in Digital Media",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT4010",
+    "moduleName": "Research Project",
+    "credits": 16,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4041",
+    "moduleName": "Mobile Application Design and Development",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4061",
+    "moduleName": "Multimedia Project Management",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "IM"
+  }
+]
