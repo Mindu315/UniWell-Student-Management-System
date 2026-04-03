@@ -71,32 +71,32 @@ const Layout = ({ children, activeTab, onTabChange }) => {
   const syllabusLabel = syllabusType === 'new' ? 'New Syllabus' : 'Old Syllabus';
 
   return (
-    <div className="min-h-screen bg-[#F7F9FB]">
+    <div className="academic-layout">
 
       {/* Top bar — shows active program + sub-tab navigation */}
-      <div className="sticky top-0 z-30 bg-[#F7F9FB]/90 backdrop-blur-md border-b border-gray-200/40">
-        <div className="px-4 sm:px-6 lg:px-8">
+      <div className="academic-topbar sticky top-0 z-30 border-b border-gray-200/40">
+        <div className="academic-topbar-inner px-4 sm:px-6 lg:px-8">
           {/* Top row: breadcrumb + program badge */}
-          <div className="flex items-center justify-between h-14">
-            <div className="flex items-center gap-2 text-sm">
+          <div className="academic-topbar-row flex items-center justify-between gap-3 min-h-14 py-3">
+            <div className="academic-breadcrumb flex items-center gap-2 text-sm min-w-0">
               <span className="text-[#6B7280] font-medium">Academic Performance</span>
               <svg className="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
-              <span className="font-semibold text-[#1C2A39]">
+              <span className="font-semibold text-[#1C2A39] truncate">
                 {navItems.find((n) => n.id === activeTab)?.label}
               </span>
             </div>
 
             {/* Active program badge */}
-            <div className="hidden sm:flex items-center gap-2 bg-white border border-gray-200/80 rounded-full px-3 py-1.5 shadow-sm">
+            <div className="academic-program-badge hidden sm:flex items-center gap-2 bg-white border border-gray-200/80 rounded-full px-3 py-1.5 shadow-sm">
               <span className="text-base">{specEmoji}</span>
               <span className="text-xs font-semibold text-[#1C2A39]">{specName}</span>
               <span className="text-[10px] text-[#6B7280] bg-[#F7F9FB] px-2 py-0.5 rounded-full font-medium">
                 {syllabusLabel}
               </span>
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/academic-performance')}
                 className="text-[10px] font-semibold text-[#6B7280] hover:text-[#1E3A5F] transition-colors ml-1"
               >
                 Change
@@ -105,7 +105,7 @@ const Layout = ({ children, activeTab, onTabChange }) => {
           </div>
 
           {/* Sub-tabs row */}
-          <div className="flex items-center gap-1 pb-2 -mb-px overflow-x-auto scrollbar-none">
+          <div className="academic-tabs flex items-center gap-1 pb-2 -mb-px overflow-x-auto scrollbar-hide">
             {navItems.map((item, i) => {
               const isActive = activeTab === item.id;
               return (
@@ -140,7 +140,7 @@ const Layout = ({ children, activeTab, onTabChange }) => {
 
       {/* Content area */}
       <div
-        className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto"
+        className="academic-content p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto"
         style={{
           opacity: mounted ? 1 : 0,
           transform: mounted ? 'translateY(0)' : 'translateY(12px)',
@@ -151,7 +151,7 @@ const Layout = ({ children, activeTab, onTabChange }) => {
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-xl border-t border-gray-200/60">
+      <div className="academic-mobile-nav sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-xl border-t border-gray-200/60">
         <div className="flex items-center justify-around px-2 h-16 pb-safe">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;

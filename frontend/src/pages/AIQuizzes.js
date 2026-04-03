@@ -61,7 +61,6 @@ const AIQuizzes = () => {
 
   useEffect(() => {
     fetchAnalytics();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleGenerate = async (formData) => {
@@ -132,7 +131,7 @@ const AIQuizzes = () => {
     <div>
       <Navbar />
 
-      <div className="container">
+      <div className="container dashboard-main unified-page-shell ai-quizzes-page-shell">
         <div className="page-header">
           <h1>AI Quizzes 🤖</h1>
           <p>Upload a PDF, generate MCQs with AI, and save to your account.</p>
@@ -249,4 +248,3 @@ const AIQuizzes = () => {
 };
 
 export default AIQuizzes;
-

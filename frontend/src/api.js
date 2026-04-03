@@ -97,6 +97,8 @@ export const aiQuizAPI = {
 
   // Get analytics based on correct-answer rate
   getQuizAnalytics: () => api.get('/ai-quizzes/analytics')
+};
+
 // Wellbeing API calls
 export const wellbeingAPI = {
   // Submit a new wellbeing check-in

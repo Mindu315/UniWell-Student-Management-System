@@ -1,7 +1,3 @@
-/**
- * Main App Component
- * Sets up routing for the application
- */
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -14,6 +10,7 @@ import AdminUsers from './pages/AdminUsers';
 import Flashcards from './pages/Flashcards';
 import AIQuizzes from './pages/AIQuizzes';
 import StressManagementPage from './pages/StressManagementPage';
+import AcademicPerformancePage from './pages/CalculatorDashboard';
 import './styles.css';
 
 function App() {
@@ -51,6 +48,24 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/academic-performance"
+            element={
+              <ProtectedRoute>
+                <AcademicPerformancePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/academic-performance/:specialization/:syllabusType"
+            element={
+              <ProtectedRoute>
+                <AcademicPerformancePage />
+              </ProtectedRoute>
+            }
+          />
+          
+
 
           {/* Admin Only Routes */}
           <Route 
@@ -89,4 +104,3 @@ function App() {
 }
 
 export default App;
-

@@ -19,9 +19,8 @@ import iseNewSyllabus from '../it_data/ise_new_syllabus.json';
 import iseOldSyllabus from '../it_data/ise_old_syllabus.json';
 import gradingStyle from '../it_data/grading_style.json';
 import * as pdfjsLib from 'pdfjs-dist';
-import pdfjsWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@5.5.207/build/pdf.worker.min.js';
 
 const syllabusMap = {
   it: { new: itNewSyllabus, old: itOldSyllabus },
@@ -230,14 +229,14 @@ const GpaCalculator = ({ selectedGrades, setSelectedGrades }) => {
   const classification = cgpaFloat > 0 ? getClassification(cgpaFloat) : null;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 min-w-0 overflow-x-hidden">
       {/* Hidden PDF input */}
       <input ref={fileInputRef} type="file" accept=".pdf" onChange={handleFileSelect} className="hidden" />
 
       {/* ── Toast ── */}
       {toast && (
         <div
-          className={`fixed top-5 right-5 z-[100] max-w-sm px-4 py-3.5 rounded-2xl shadow-xl border backdrop-blur-md flex items-start gap-3 transition-all duration-300`}
+          className={`fixed top-5 right-4 sm:right-5 z-[100] w-[calc(100vw-2rem)] sm:w-auto max-w-sm px-4 py-3.5 rounded-2xl shadow-xl border backdrop-blur-md flex items-start gap-3 transition-all duration-300`}
           style={{
             animation: 'slideInRight 0.3s ease-out',
             background: toast.type === 'success' ? 'rgba(43,182,115,0.08)' : toast.type === 'error' ? 'rgba(239,68,68,0.08)' : 'rgba(255,255,255,0.95)',
@@ -260,7 +259,7 @@ const GpaCalculator = ({ selectedGrades, setSelectedGrades }) => {
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
         style={{ opacity: mounted ? 1 : 0, transform: mounted ? 'none' : 'translateY(-12px)', transition: 'opacity 0.5s ease, transform 0.5s ease' }}
       >
-        <div className="px-4 py-1"> {/* Added px-6 for left/right spacing, and py-4 for a little top/bottom breathing room! */}
+        <div className="px-1 sm:px-4 py-1 min-w-0">
           <h1 className="text-2xl sm:text-3xl font-bold text-[#1C2A39] tracking-tight">
             GPA Calculator
           </h1>
@@ -271,7 +270,7 @@ const GpaCalculator = ({ selectedGrades, setSelectedGrades }) => {
         <button
   onClick={() => fileInputRef.current?.click()}
   disabled={isParsing}
-  className={`mr-6 inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 shadow-sm cursor-pointer whitespace-nowrap ${
+  className={`inline-flex items-center justify-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 shadow-sm cursor-pointer whitespace-nowrap self-start sm:self-auto w-full sm:w-auto ${
     isParsing
       ? 'bg-gray-100 text-[#6B7280] cursor-not-allowed'
       : 'bg-gradient-to-r from-[#1E3A5F] to-[#1F5F73] text-white hover:shadow-md hover:scale-[1.02] active:scale-[0.98]'

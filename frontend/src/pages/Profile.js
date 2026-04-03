@@ -92,7 +92,7 @@ const Profile = () => {
     return (
       <div>
         <Navbar />
-        <div className="container">
+        <div className="container dashboard-main unified-page-shell">
           <div className="loading">Loading your profile...</div>
         </div>
       </div>
@@ -102,7 +102,7 @@ const Profile = () => {
   return (
     <div>
       <Navbar />
-      <div className="container">
+      <div className="container dashboard-main unified-page-shell profile-page-shell">
         <div className="page-header">
           <h1>My Profile 👤</h1>
           <p>Manage your personal information and academic details</p>

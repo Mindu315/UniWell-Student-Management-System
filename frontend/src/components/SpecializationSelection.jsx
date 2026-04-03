@@ -115,11 +115,11 @@ const SpecializationSelection = () => {
 
   const handleSelect = (spec, syllabus) => {
     const slug = slugMap[spec.name];
-    navigate(`/calculator/${slug}/${syllabus}`);
+    navigate(`/academic-performance/${slug}/${syllabus}`);
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9FB] relative overflow-hidden">
+    <div className="min-h-screen w-full max-w-full bg-[#F7F9FB] relative overflow-x-hidden">
 
       {/* Animated Background Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -137,7 +137,7 @@ const SpecializationSelection = () => {
         />
       </div>
 
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 overflow-x-hidden">
 
         {/* ── Header ── */}
         <div
@@ -195,7 +195,7 @@ const SpecializationSelection = () => {
         </div>
 
         {/* ── Grid ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {specializations.map((spec, index) => (
             <div
               key={spec.name}

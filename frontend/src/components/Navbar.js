@@ -40,10 +40,15 @@ const Navbar = () => {
       '/profile': 'Profile',
       '/admin': 'Reports & User Management',
       '/flashcards': 'Flashcards',
-      '/ai-quizzes': 'AI Quizzes'
+      '/ai-quizzes': 'AI Quizzes',
       '/stress-management': 'Stress Management',
+      '/academic-performance': 'Academic Performance',
       '/admin': 'Reports & User Management'
     };
+
+    if (location.pathname.startsWith('/academic-performance')) {
+      return 'Academic Performance';
+    }
 
     return titleMap[location.pathname] || 'UniWell Workspace';
   }, [location.pathname]);

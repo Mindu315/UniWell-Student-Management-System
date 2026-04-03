@@ -1,31 +1,3 @@
-/**
- * SLIIT Stress Management System - Backend Server
- * Simple User Management System
- * 
- * Student: [Your Name]
- * ID: [Your Student ID]
- * 
- * HOW TO RUN:
- * 1. Install dependencies: npm install
- * 2. Create .env file (copy from .env.example)
- * 3. Make sure MongoDB is running
- * 4. Run development server: npm run dev
- * 5. Or run production: npm start
- * 
- * API ENDPOINTS:
- * 
- * Auth Routes:
- * - POST /api/auth/register  - Register new user
- * - POST /api/auth/login     - Login user
- * - GET  /api/auth/me        - Get current user (Protected)
- * 
- * User Routes:
- * - PUT    /api/users/me     - Update my profile (Protected)
- * - GET    /api/users        - Get all users (Admin only)
- * - PUT    /api/users/:id    - Update user (Admin only)
- * - DELETE /api/users/:id    - Delete user (Admin only)
- */
-
 // Load environment variables from .env file
 require('dotenv').config();
 
@@ -96,6 +68,7 @@ app.get('/', (req, res) => {
         remove: 'DELETE /api/ai-quizzes/:id (Protected)',
         attempts: 'POST /api/ai-quizzes/:id/attempts (Protected, body: { selectedOptions: number[] })',
         analytics: 'GET /api/ai-quizzes/analytics (Protected)'
+      },
       wellbeing: {
         createCheckIn: 'POST /api/wellbeing/check-ins (Protected)',
         getCheckIns: 'GET /api/wellbeing/check-ins (Protected)'
@@ -129,51 +102,3 @@ app.listen(PORT, () => {
   console.log(`📍 API URL: http://localhost:${PORT}`);
   console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
-
-/**
- * TESTING WITH POSTMAN/THUNDER CLIENT:
- * 
- * 1. Register a user:
- *    POST http://localhost:5000/api/auth/register
- *    Body (JSON):
- *    {
- *      "fullName": "John Doe",
- *      "email": "john@sliit.lk",
- *      "password": "password123",
- *      "studentId": "IT21234567",
- *      "faculty": "Computing",
- *      "degreeProgram": "BSc (Hons) in IT",
- *      "year": 2
- *    }
- * 
- * 2. Login:
- *    POST http://localhost:5000/api/auth/login
- *    Body (JSON):
- *    {
- *      "email": "john@sliit.lk",
- *      "password": "password123"
- *    }
- *    Response will include token - copy it!
- * 
- * 3. Get current user (Protected):
- *    GET http://localhost:5000/api/auth/me
- *    Headers:
- *    Authorization: Bearer <your_token_here>
- * 
- * 4. Update my profile:
- *    PUT http://localhost:5000/api/users/me
- *    Headers:
- *    Authorization: Bearer <your_token_here>
- *    Body (JSON):
- *    {
- *      "fullName": "John Updated",
- *      "year": 3
- *    }
- * 
- * 5. Get all users (Admin only):
- *    GET http://localhost:5000/api/users
- *    Headers:
- *    Authorization: Bearer <admin_token_here>
- * 
- * Note: To test admin routes, manually change a user's role to "admin" in MongoDB
- */

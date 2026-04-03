@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 import Layout from '../components/Layout';
 import GpaCalculator from './GpaCalculator';
 import Analyzer from './Analyzer';
 import TargetPredictor from './TargetPredictor';
+import SpecializationSelection from '../components/SpecializationSelection';
 
 const STORAGE_KEY = 'gpa-suite-grades';
 
 const CalculatorDashboard = () => {
+  const { specialization, syllabusType } = useParams();
   const [activeTab, setActiveTab] = useState('calculator');
   const [selectedGrades, setSelectedGrades] = useState(() => {
     try {
@@ -44,10 +48,21 @@ const CalculatorDashboard = () => {
     }
   };
 
+  const hasAcademicContext = Boolean(specialization && syllabusType);
+
   return (
-    <Layout activeTab={activeTab} onTabChange={setActiveTab}>
-      {renderContent()}
-    </Layout>
+    <>
+      <Navbar />
+      <div className="container dashboard-main academic-dashboard-page">
+        {hasAcademicContext ? (
+          <Layout activeTab={activeTab} onTabChange={setActiveTab}>
+            {renderContent()}
+          </Layout>
+        ) : (
+          <SpecializationSelection />
+        )}
+      </div>
+    </>
   );
 };
 
