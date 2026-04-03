@@ -7,7 +7,7 @@ const Sidebar = ({ isAdmin, onNavigate }) => {
     { key: 'academic', label: 'Academic Performance', icon: '📘', to: '/academic-performance', type: 'route' },
     { key: 'ai-quizzes', label: 'AI Quizzes', icon: '🤖', to: '/ai-quizzes', type: 'route' },
     { key: 'flashcards', label: 'Flashcards', icon: '🃏', to: '/flashcards', type: 'route' },
-    { key: 'career', label: 'Career Guidance', icon: '🎯', type: 'placeholder' }
+    { key: 'career', label: 'Career Guidance', icon: '🎯', to: '/career-guidance', type: 'route' }
   ];
 
   const secondaryMenuItems = [

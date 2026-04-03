@@ -6,7 +6,7 @@
  * - Save quiz per authenticated user
  */
 
-const pdfParse = require('pdf-parse');
+const { PDFParse } = require('pdf-parse');
 const { OpenAI } = require('openai');
 
 const Quiz = require('../models/Quiz');
@@ -75,8 +75,14 @@ const validateQuizJson = (quizJson) => {
 };
 
 const extractTextFromPdfBuffer = async (buffer) => {
-  const parsed = await pdfParse(buffer);
-  return parsed?.text || '';
+  const parser = new PDFParse({ data: buffer });
+
+  try {
+    const parsed = await parser.getText();
+    return parsed?.text || '';
+  } finally {
+    await parser.destroy();
+  }
 };
 
 const generateMcqsWithOpenAI = async ({
@@ -353,4 +359,3 @@ module.exports = {
   getQuizById,
   deleteQuizById
 };
-

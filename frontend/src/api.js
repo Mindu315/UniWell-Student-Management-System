@@ -108,6 +108,16 @@ export const wellbeingAPI = {
   getMyCheckins: (limit = 30) => api.get(`/wellbeing/check-ins?limit=${limit}`)
 };
 
+export const careerAPI = {
+  getIndustries: () => api.get('/careers/industries'),
+
+  getSkillsByIndustry: (industryId) => api.get(`/careers/industries/${industryId}/skills`),
+
+  getQuizByIndustry: (industryId) => api.get(`/careers/industries/${industryId}/quiz`),
+
+  recommendCareer: (data) => api.post('/careers/recommend', data)
+};
+
 // Helper functions for token management
 export const setToken = (token) => {
   localStorage.setItem('token', token);

@@ -5,6 +5,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const { connectCareerDB } = require('./config/careerDb');
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
@@ -12,12 +13,17 @@ const userRoutes = require('./routes/userRoutes');
 const flashcardRoutes = require('./routes/flashcardRoutes');
 const aiQuizRoutes = require('./routes/aiQuizRoutes');
 const wellbeingRoutes = require('./routes/wellbeingRoutes');
+const careerRoutes = require('./routes/careerRoutes');
 
 // Create Express app
 const app = express();
 
-// Connect to MongoDB database
+// Connect to MongoDB databases
 connectDB();
+connectCareerDB().catch((error) => {
+  console.error(`❌ Career MongoDB Connection Error: ${error.message}`);
+  process.exit(1);
+});
 
 // Middleware
 app.use(express.json()); // Parse JSON request body
@@ -35,6 +41,7 @@ app.use('/api/users', userRoutes); // User routes (profile, admin operations)
 app.use('/api/flashcards', flashcardRoutes); // Flashcard CRUD routes (protected)
 app.use('/api/ai-quizzes', aiQuizRoutes); // AI quiz generator routes (protected)
 app.use('/api/wellbeing', wellbeingRoutes); // Wellbeing routes (check-ins)
+app.use('/api/careers', careerRoutes); // Career guidance routes (protected)
 
 // Welcome route
 app.get('/', (req, res) => {
@@ -72,6 +79,12 @@ app.get('/', (req, res) => {
       wellbeing: {
         createCheckIn: 'POST /api/wellbeing/check-ins (Protected)',
         getCheckIns: 'GET /api/wellbeing/check-ins (Protected)'
+      },
+      careers: {
+        industries: 'GET /api/careers/industries (Protected)',
+        skills: 'GET /api/careers/industries/:industryId/skills (Protected)',
+        quiz: 'GET /api/careers/industries/:industryId/quiz (Protected)',
+        recommend: 'POST /api/careers/recommend (Protected)'
       }
     }
   });

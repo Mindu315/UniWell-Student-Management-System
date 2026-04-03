@@ -43,6 +43,12 @@ const Navbar = () => {
       '/ai-quizzes': 'AI Quizzes',
       '/stress-management': 'Stress Management',
       '/academic-performance': 'Academic Performance',
+      '/career-guidance': 'Career Guidance',
+      '/career-process': 'Career Process',
+      '/industry-quiz': 'Career Quiz',
+      '/results': 'Career Results',
+      '/salary-trends': 'Salary Trends',
+      '/course-suggestions': 'Course Suggestions',
       '/admin': 'Reports & User Management'
     };
 
