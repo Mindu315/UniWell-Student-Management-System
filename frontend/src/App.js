@@ -6,6 +6,8 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import Analysis from './pages/Analysis';
 import AdminUsers from './pages/AdminUsers';
 import Flashcards from './pages/Flashcards';
 import AIQuizzes from './pages/AIQuizzes';
@@ -43,6 +45,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/settings" 
+            element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/analysis" 
+            element={
+              <ProtectedRoute>
+                <Analysis />
               </ProtectedRoute>
             } 
           />

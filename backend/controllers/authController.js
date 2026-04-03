@@ -6,6 +6,19 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+const serializeUser = (user) => ({
+  _id: user._id,
+  fullName: user.fullName,
+  email: user.email,
+  studentId: user.studentId,
+  faculty: user.faculty,
+  degreeProgram: user.degreeProgram,
+  year: user.year,
+  role: user.role,
+  settings: user.settings,
+  createdAt: user.createdAt
+});
+
 /**
  * Generate JWT token
  */
@@ -79,16 +92,7 @@ const register = async (req, res) => {
       success: true,
       message: 'User registered successfully',
       data: {
-        user: {
-          _id: user._id,
-          fullName: user.fullName,
-          email: user.email,
-          studentId: user.studentId,
-          faculty: user.faculty,
-          degreeProgram: user.degreeProgram,
-          year: user.year,
-          role: user.role
-        },
+        user: serializeUser(user),
         token
       }
     });
@@ -147,16 +151,7 @@ const login = async (req, res) => {
       success: true,
       message: 'Login successful',
       data: {
-        user: {
-          _id: user._id,
-          fullName: user.fullName,
-          email: user.email,
-          studentId: user.studentId,
-          faculty: user.faculty,
-          degreeProgram: user.degreeProgram,
-          year: user.year,
-          role: user.role
-        },
+        user: serializeUser(user),
         token
       }
     });
@@ -191,17 +186,7 @@ const me = async (req, res) => {
       success: true,
       message: 'User retrieved successfully',
       data: {
-        user: {
-          _id: user._id,
-          fullName: user.fullName,
-          email: user.email,
-          studentId: user.studentId,
-          faculty: user.faculty,
-          degreeProgram: user.degreeProgram,
-          year: user.year,
-          role: user.role,
-          createdAt: user.createdAt
-        }
+        user: serializeUser(user)
       }
     });
   } catch (error) {

@@ -15,6 +15,8 @@ const Navbar = () => {
   const tokenUser = getUserFromToken();
   const [currentUser, setCurrentUser] = useState(tokenUser);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearchResults, setShowSearchResults] = useState(false);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -34,37 +36,69 @@ const Navbar = () => {
   const isAdmin = currentUser && currentUser.role === 'admin';
   const firstName = currentUser?.fullName?.split(' ')?.[0] || currentUser?.name?.split(' ')?.[0] || 'Student';
 
-  const pageTitle = useMemo(() => {
-    const titleMap = {
-      '/dashboard': 'Dashboard',
-      '/profile': 'Profile',
-      '/admin': 'Reports & User Management',
-      '/flashcards': 'Flashcards',
-      '/ai-quizzes': 'AI Quizzes',
-      '/stress-management': 'Stress Management',
-      '/academic-performance': 'Academic Performance',
-      '/career-guidance': 'Career Guidance',
-      '/career-process': 'Career Process',
-      '/industry-quiz': 'Career Quiz',
-      '/results': 'Career Results',
-      '/salary-trends': 'Salary Trends',
-      '/course-suggestions': 'Course Suggestions',
-      '/admin': 'Reports & User Management'
-    };
-
-    if (location.pathname.startsWith('/academic-performance')) {
-      return 'Academic Performance';
-    }
-
-    return titleMap[location.pathname] || 'UniWell Workspace';
-  }, [location.pathname]);
-
   const handleLogout = () => {
     removeToken();
     navigate('/login');
   };
 
   const closeSidebar = () => setSidebarOpen(false);
+
+  useEffect(() => {
+    setShowSearchResults(false);
+    setSearchQuery('');
+  }, [location.pathname]);
+
+  const searchableFeatures = useMemo(() => {
+    const baseItems = [
+      { label: 'Dashboard', description: 'Open your main student dashboard', to: '/dashboard', icon: '🏠', keywords: ['home', 'overview', 'main'] },
+      { label: 'Stress Management', description: 'Track check-ins and wellness insights', to: '/stress-management', icon: '🌿', keywords: ['wellbeing', 'stress', 'mental'] },
+      { label: 'Academic Performance', description: 'Use GPA tools and academic calculators', to: '/academic-performance', icon: '📘', keywords: ['gpa', 'calculator', 'grades'] },
+      { label: 'AI Quizzes', description: 'Generate quizzes from PDFs and review analytics', to: '/ai-quizzes', icon: '🤖', keywords: ['quiz', 'mcq', 'pdf'] },
+      { label: 'Flashcards', description: 'Create and study flashcards', to: '/flashcards', icon: '🃏', keywords: ['cards', 'study', 'revision'] },
+      { label: 'Career Guidance', description: 'Explore careers, salary, and courses', to: '/career-guidance', icon: '🎯', keywords: ['career', 'salary', 'courses'] },
+      { label: 'Analysis', description: 'See your learning and wellbeing analysis', to: '/analysis', icon: '📊', keywords: ['analysis', 'insights', 'reports'] },
+      { label: 'Profile', description: 'Manage your account profile', to: '/profile', icon: '👤', keywords: ['account', 'profile', 'me'] },
+      { label: 'Settings', description: 'Control your experience preferences', to: '/settings', icon: '⚙️', keywords: ['preferences', 'settings', 'config'] }
+    ];
+
+    if (isAdmin) {
+      baseItems.push({
+        label: 'Admin Reports',
+        description: 'Manage users and review system reports',
+        to: '/admin',
+        icon: '🛡️',
+        keywords: ['admin', 'reports', 'users']
+      });
+    }
+
+    return baseItems;
+  }, [isAdmin]);
+
+  const filteredFeatures = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+
+    if (!q) {
+      return searchableFeatures.slice(0, 6);
+    }
+
+    return searchableFeatures.filter((item) => {
+      const haystack = `${item.label} ${item.description} ${(item.keywords || []).join(' ')}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [searchQuery, searchableFeatures]);
+
+  const handleSearchNavigate = (to) => {
+    setShowSearchResults(false);
+    setSearchQuery('');
+    navigate(to);
+  };
+
+  const handleSearchSubmit = (event) => {
+    if (event.key === 'Enter' && filteredFeatures[0]) {
+      event.preventDefault();
+      handleSearchNavigate(filteredFeatures[0].to);
+    }
+  };
 
   return (
     <>
@@ -91,10 +125,13 @@ const Navbar = () => {
               ☰
             </button>
 
-            <div className="navbar-page-meta">
-              <p className="navbar-breadcrumb">UniWell / Workspace</p>
-              <h2 className="navbar-page-title">{pageTitle}</h2>
-            </div>
+            <Link to="/dashboard" className="navbar-brand-shell" onClick={closeSidebar}>
+              <img src="/logo.png" alt="UniWell Logo" className="navbar-brand-logo" />
+              <span className="navbar-brand-copy">
+                <strong>UniWell</strong>
+                <span>Student Management System</span>
+              </span>
+            </Link>
           </div>
 
           <div className="navbar-right">
@@ -103,9 +140,39 @@ const Navbar = () => {
               <input
                 type="text"
                 className="navbar-search"
+                value={searchQuery}
                 placeholder="Search features, tools, resources..."
                 aria-label="Search dashboard"
+                onFocus={() => setShowSearchResults(true)}
+                onBlur={() => window.setTimeout(() => setShowSearchResults(false), 120)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setShowSearchResults(true);
+                }}
+                onKeyDown={handleSearchSubmit}
               />
+              {showSearchResults && (
+                <div className="navbar-search-results">
+                  {filteredFeatures.length > 0 ? (
+                    filteredFeatures.map((item) => (
+                      <button
+                        key={item.to}
+                        type="button"
+                        className="navbar-search-item"
+                        onMouseDown={() => handleSearchNavigate(item.to)}
+                      >
+                        <span className="navbar-search-item-icon" aria-hidden="true">{item.icon}</span>
+                        <span className="navbar-search-item-copy">
+                          <strong>{item.label}</strong>
+                          <span>{item.description}</span>
+                        </span>
+                      </button>
+                    ))
+                  ) : (
+                    <div className="navbar-search-empty">No matching tools found.</div>
+                  )}
+                </div>
+              )}
             </div>
 
             <button type="button" className="icon-btn" aria-label="Notifications">

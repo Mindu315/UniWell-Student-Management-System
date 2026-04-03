@@ -43,6 +43,10 @@ export const authAPI = {
 export const userAPI = {
   // Update my profile
   updateMyProfile: (data) => api.put('/users/me', data),
+
+  getMySettings: () => api.get('/users/settings'),
+
+  updateMySettings: (data) => api.put('/users/settings', data),
   
   // Get all users (admin only)
   getAllUsers: () => api.get('/users'),

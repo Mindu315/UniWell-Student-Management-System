@@ -11,25 +11,13 @@ const Sidebar = ({ isAdmin, onNavigate }) => {
   ];
 
   const secondaryMenuItems = [
-    { key: 'reports', label: isAdmin ? 'Reports' : 'Progress Reports', icon: '📊', to: isAdmin ? '/admin' : null, type: isAdmin ? 'route' : 'placeholder' },
+    { key: 'reports', label: isAdmin ? 'Reports' : 'Analysis', icon: '📊', to: isAdmin ? '/admin' : '/analysis', type: 'route' },
     { key: 'profile', label: 'Profile', icon: '👤', to: '/profile', type: 'route' },
-    { key: 'settings', label: 'Settings', icon: '⚙️', type: 'placeholder' }
+    { key: 'settings', label: 'Settings', icon: '⚙️', to: '/settings', type: 'route' }
   ];
 
   return (
     <aside className="dashboard-sidebar" aria-label="Sidebar">
-      <div className="sidebar-logo-section">
-        <div className="sidebar-logo-wrap">
-          <div className="sidebar-logo-circle">
-            <img src="/logo.png" alt="UniWell Logo" className="sidebar-logo-img" />
-          </div>
-          <div className="sidebar-logo-text">
-            <h1>UniWell</h1>
-            <p>Student Management System</p>
-          </div>
-        </div>
-      </div>
-
       <nav className="sidebar-nav">
         <p className="sidebar-group-title">Main</p>
         <ul>
@@ -79,11 +67,6 @@ const Sidebar = ({ isAdmin, onNavigate }) => {
           ))}
         </ul>
       </nav>
-
-      <div className="sidebar-wellness-card">
-        <p className="wellness-title">Your mind matters.</p>
-        <p className="wellness-text">Balance your mind, boost your future.</p>
-      </div>
     </aside>
   );
 };
