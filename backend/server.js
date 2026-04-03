@@ -37,6 +37,7 @@ const connectDB = require('./config/db');
 // Import routes
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const wellbeingRoutes = require('./routes/wellbeingRoutes');
 
 // Create Express app
 const app = express();
@@ -57,6 +58,7 @@ app.use(cors({
 // Routes
 app.use('/api/auth', authRoutes); // Auth routes (register, login, me)
 app.use('/api/users', userRoutes); // User routes (profile, admin operations)
+app.use('/api/wellbeing', wellbeingRoutes); // Wellbeing routes (check-ins)
 
 // Welcome route
 app.get('/', (req, res) => {
@@ -75,6 +77,10 @@ app.get('/', (req, res) => {
         getAllUsers: 'GET /api/users (Admin)',
         updateUser: 'PUT /api/users/:id (Admin)',
         deleteUser: 'DELETE /api/users/:id (Admin)'
+      },
+      wellbeing: {
+        createCheckIn: 'POST /api/wellbeing/check-ins (Protected)',
+        getCheckIns: 'GET /api/wellbeing/check-ins (Protected)'
       }
     }
   });

@@ -38,6 +38,7 @@ const Navbar = () => {
     const titleMap = {
       '/dashboard': 'Dashboard',
       '/profile': 'Profile',
+      '/stress-management': 'Stress Management',
       '/admin': 'Reports & User Management'
     };
 

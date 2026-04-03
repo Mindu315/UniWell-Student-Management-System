@@ -54,6 +54,15 @@ export const userAPI = {
   deleteUser: (id) => api.delete(`/users/${id}`)
 };
 
+// Wellbeing API calls
+export const wellbeingAPI = {
+  // Submit a new wellbeing check-in
+  createCheckin: (data) => api.post('/wellbeing/check-ins', data),
+
+  // Get current user's wellbeing check-in history
+  getMyCheckins: (limit = 30) => api.get(`/wellbeing/check-ins?limit=${limit}`)
+};
+
 // Helper functions for token management
 export const setToken = (token) => {
   localStorage.setItem('token', token);
