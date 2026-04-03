@@ -39,6 +39,7 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const flashcardRoutes = require('./routes/flashcardRoutes');
 const aiQuizRoutes = require('./routes/aiQuizRoutes');
+const wellbeingRoutes = require('./routes/wellbeingRoutes');
 
 // Create Express app
 const app = express();
@@ -61,6 +62,7 @@ app.use('/api/auth', authRoutes); // Auth routes (register, login, me)
 app.use('/api/users', userRoutes); // User routes (profile, admin operations)
 app.use('/api/flashcards', flashcardRoutes); // Flashcard CRUD routes (protected)
 app.use('/api/ai-quizzes', aiQuizRoutes); // AI quiz generator routes (protected)
+app.use('/api/wellbeing', wellbeingRoutes); // Wellbeing routes (check-ins)
 
 // Welcome route
 app.get('/', (req, res) => {
@@ -94,6 +96,9 @@ app.get('/', (req, res) => {
         remove: 'DELETE /api/ai-quizzes/:id (Protected)',
         attempts: 'POST /api/ai-quizzes/:id/attempts (Protected, body: { selectedOptions: number[] })',
         analytics: 'GET /api/ai-quizzes/analytics (Protected)'
+      wellbeing: {
+        createCheckIn: 'POST /api/wellbeing/check-ins (Protected)',
+        getCheckIns: 'GET /api/wellbeing/check-ins (Protected)'
       }
     }
   });
