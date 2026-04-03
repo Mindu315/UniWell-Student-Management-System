@@ -1,0 +1,319 @@
+/* Container and Main Layout */
+.uniwell-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #1E3A5F;
+  overflow: hidden;
+}
+/* 3. The Main Content Area */
+.uniwell-main {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+/* The Hub Grid */
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 30px;
+}
+
+/* The Card itself */
+.hub-card {
+  position: relative;
+  height: 300px;
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  overflow: hidden; /* Important: keeps the overlay inside the rounded corners */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Force titles to be pure white */
+.hub-card h3 {
+    color: #ffffff !important; 
+    margin-top: 15px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+/* Make the description text light grey so it stands out */
+.hub-card p {
+    color: #cbd5e0 !important; 
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 15px 0;
+    /* This ensures the text isn't "faded" */
+    filter: brightness(1); 
+}
+
+.hub-card:hover {
+  transform: scale(1.03); /* Subtle pop-out effect */
+}
+
+/* Remove the "faded" look from the other two cards */
+.hub-card.disabled {
+    opacity: 1 !important; 
+    cursor: pointer; /* Change this since you are enabling them */
+}
+
+
+.hub-btn {
+  background: #52b788;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.pill {
+  background: transparent;
+  border: 1px solid #52b788;
+  color: #52b788;
+  padding: 5px 15px;
+  border-radius: 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.pill.active { background: #52b788; color: white; }
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #52b788;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.job-box {
+  background: rgba(0,0,0,0.2);
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+/* 2. Fix the Sidebar Width */
+/* If your Sidebar component has a class like .dashboard-sidebar, 
+   ensure it has a fixed width so it doesn't grow */
+.dashboard-sidebar {
+  width: 260px; /* Adjust this to match your sidebar's actual width */
+  min-width: 260px;
+  height: 100vh;
+  flex-shrink: 0; /* Prevents the sidebar from getting squashed */
+}
+
+.sidebar-logo-circle {
+  width: 60px;          /* Or your specific circle size */
+  height: 60px;
+  border-radius: 50%;   /* This makes the container a circle */
+  overflow: hidden;     /* THIS IS THE KEY: It cuts off anything outside the circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff; /* Optional: gives a clean white background behind the logo */
+}
+
+.sidebar-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;  /* This ensures the whole logo is visible without stretching */
+  padding: 5px;  
+       
+}
+
+/* The hidden content layer */
+.card-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  
+  /* Initial State: Invisible */
+  opacity: 0;
+  background: rgba(11, 30, 51, 0.85); /* Dark tint to make text pop */
+  transition: opacity 0.4s ease;
+}
+
+/* Reveal content on hover */
+.hub-card:hover .card-content {
+  opacity: 1;
+}
+
+/* Text styling inside the reveal */
+.card-content h3 {
+  color: #ffffff !important;
+  font-size: 1.4rem;
+  margin: 10px 0;
+  font-weight: 700;
+}
+
+.card-content p {
+  color: #e2e8f0 !important;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.icon {
+  font-size: 2.5rem;
+}
+
+/* The Button */
+.hub-btn {
+  background: #52b788;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.hub-btn:hover {
+  background: #40916c;
+}
+
+.page-header{
+  background: #f7f9fb;
+}
+
+h1{
+  color: white;
+}
+
+CSS
+/* Container to center the card on your dark background */
+.analysis-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 20px;
+  width: 100%;
+}
+
+/* The White Card */
+.white-analysis-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 700px;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  color: #1a202c; /* Dark text for white background */
+}
+
+.white-analysis-card h2 {
+  color: #0b1e33;
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #718096;
+  margin-bottom: 30px;
+}
+
+.selection-section {
+  margin-bottom: 25px;
+}
+
+.selection-section label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #2d3748;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* The Grid for Buttons */
+.options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Individual Option Buttons */
+.option-btn {
+  padding: 12px 20px;
+  border: 2px solid #e2e8f0;
+  background: #f7fafc;
+  color: #4a5568;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+  border-color: #52b788;
+  background: #f0fff4;
+}
+
+.option-btn.active {
+  border-color: #52b788;
+  background: #52b788;
+  color: white;
+  box-shadow: 0 4px 12px rgba(82, 183, 136, 0.3);
+}
+
+/* The Final Next Button */
+.next-step-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 16px;
+  background: #0b1e33; /* Dark blue to match your sidebar */
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.next-step-btn:hover {
+  background: #162d45;
+}
+
+.back-btn {
+  background: transparent;
+  color: #52b788; /* Your emerald green */
+  border: 1px solid #52b788;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #52b788;
+  color: white;
+}
+
+.view-container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
