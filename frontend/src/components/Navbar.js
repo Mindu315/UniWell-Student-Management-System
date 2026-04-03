@@ -40,7 +40,7 @@ const Navbar = () => {
       '/profile': 'Profile',
       '/admin': 'Reports & User Management',
       '/flashcards': 'Flashcards',
-      '/ai-quizzes': 'AI Quizzes'
+      '/ai-quizzes': 'AI Quizzes',
       '/stress-management': 'Stress Management',
       '/admin': 'Reports & User Management'
     };

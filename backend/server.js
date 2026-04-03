@@ -95,7 +95,7 @@ app.get('/', (req, res) => {
         getById: 'GET /api/ai-quizzes/:id (Protected)',
         remove: 'DELETE /api/ai-quizzes/:id (Protected)',
         attempts: 'POST /api/ai-quizzes/:id/attempts (Protected, body: { selectedOptions: number[] })',
-        analytics: 'GET /api/ai-quizzes/analytics (Protected)'
+        analytics: 'GET /api/ai-quizzes/analytics (Protected)'},
       wellbeing: {
         createCheckIn: 'POST /api/wellbeing/check-ins (Protected)',
         getCheckIns: 'GET /api/wellbeing/check-ins (Protected)'
