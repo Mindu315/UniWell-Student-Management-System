@@ -4,6 +4,47 @@
  */
 
 const mongoose = require('mongoose');
+const dns = require('node:dns');
+
+const DEFAULT_PUBLIC_DNS = ['1.1.1.1', '8.8.8.8'];
+
+/**
+ * Configure DNS resolvers for MongoDB SRV lookups.
+ * Useful when local DNS does not resolve Atlas SRV records reliably.
+ */
+const configureMongoDns = () => {
+  const shouldForcePublicDns = process.env.MONGO_FORCE_PUBLIC_DNS !== 'false';
+
+  if (!shouldForcePublicDns) {
+    return;
+  }
+
+  const servers = (process.env.MONGO_DNS_SERVERS || DEFAULT_PUBLIC_DNS.join(','))
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  if (servers.length === 0) {
+    return;
+  }
+
+  try {
+    dns.setServers(servers);
+    console.log(`DNS resolvers set for MongoDB lookup: ${servers.join(', ')}`);
+  } catch (error) {
+    console.warn(`Failed to apply custom DNS resolvers: ${error.message}`);
+  }
+
+  const dnsOrder = process.env.MONGO_DNS_RESULT_ORDER;
+  if (dnsOrder) {
+    try {
+      dns.setDefaultResultOrder(dnsOrder);
+      console.log(`DNS result order set to: ${dnsOrder}`);
+    } catch (error) {
+      console.warn(`Invalid MONGO_DNS_RESULT_ORDER value: ${dnsOrder}`);
+    }
+  }
+};
 
 /**
  * Connect to MongoDB database
@@ -11,6 +52,8 @@ const mongoose = require('mongoose');
  */
 const connectDB = async () => {
   try {
+    configureMongoDns();
+
     // Mongoose connection options
     const options = {
       // useNewUrlParser and useUnifiedTopology are now default in Mongoose 6+

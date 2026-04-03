@@ -97,6 +97,13 @@ export const aiQuizAPI = {
 
   // Get analytics based on correct-answer rate
   getQuizAnalytics: () => api.get('/ai-quizzes/analytics')
+// Wellbeing API calls
+export const wellbeingAPI = {
+  // Submit a new wellbeing check-in
+  createCheckin: (data) => api.post('/wellbeing/check-ins', data),
+
+  // Get current user's wellbeing check-in history
+  getMyCheckins: (limit = 30) => api.get(`/wellbeing/check-ins?limit=${limit}`)
 };
 
 // Helper functions for token management

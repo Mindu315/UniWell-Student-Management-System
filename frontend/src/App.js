@@ -13,6 +13,7 @@ import Profile from './pages/Profile';
 import AdminUsers from './pages/AdminUsers';
 import Flashcards from './pages/Flashcards';
 import AIQuizzes from './pages/AIQuizzes';
+import StressManagementPage from './pages/StressManagementPage';
 import './styles.css';
 
 function App() {
@@ -41,6 +42,14 @@ function App() {
                 <Profile />
               </ProtectedRoute>
             } 
+          />
+          <Route
+            path="/stress-management"
+            element={
+              <ProtectedRoute>
+                <StressManagementPage />
+              </ProtectedRoute>
+            }
           />
 
           {/* Admin Only Routes */}
