@@ -88,14 +88,8 @@ const validateQuizJson = (quizJson) => {
 };
 
 const extractTextFromPdfBuffer = async (buffer) => {
-  const parser = new PDFParse({ data: buffer });
-
-  try {
-    const parsed = await parser.getText();
-    return parsed?.text || '';
-  } finally {
-    await parser.destroy();
-  }
+  const parsed = await pdfParse(buffer);
+  return parsed?.text || '';
 };
 
 /**
@@ -179,8 +173,8 @@ const generateQuizFromPdf = async (req, res) => {
       });
     }
 
-    const groqApiKey = process.env.GROQ_API_KEY;
-    const groqModel = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+    const groqApiKey = (process.env.GROQ_API_KEY || '').trim();
+    const groqModel = (process.env.GROQ_MODEL || 'llama-3.3-70b-versatile').trim();
 
     if (!groqApiKey) {
       return res.status(500).json({
@@ -238,6 +232,15 @@ const generateQuizFromPdf = async (req, res) => {
     });
   } catch (error) {
     console.error('Generate quiz error:', error);
+
+    if (error?.status === 401) {
+      return res.status(502).json({
+        success: false,
+        message: 'Groq authentication failed. Please verify GROQ_API_KEY in backend/.env and restart the server.',
+        error: 'Invalid Groq API key',
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: 'Error generating quiz',
