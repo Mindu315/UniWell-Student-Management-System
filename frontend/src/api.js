@@ -43,6 +43,10 @@ export const authAPI = {
 export const userAPI = {
   // Update my profile
   updateMyProfile: (data) => api.put('/users/me', data),
+
+  getMySettings: () => api.get('/users/settings'),
+
+  updateMySettings: (data) => api.put('/users/settings', data),
   
   // Get all users (admin only)
   getAllUsers: () => api.get('/users'),
@@ -96,7 +100,9 @@ export const aiQuizAPI = {
     api.post(`/ai-quizzes/${quizId}/attempts`, { selectedOptions }),
 
   // Get analytics based on correct-answer rate
-  getQuizAnalytics: () => api.get('/ai-quizzes/analytics')}
+  getQuizAnalytics: () => api.get('/ai-quizzes/analytics')
+};
+
 // Wellbeing API calls
 export const wellbeingAPI = {
   // Submit a new wellbeing check-in
@@ -104,6 +110,16 @@ export const wellbeingAPI = {
 
   // Get current user's wellbeing check-in history
   getMyCheckins: (limit = 30) => api.get(`/wellbeing/check-ins?limit=${limit}`)
+};
+
+export const careerAPI = {
+  getIndustries: () => api.get('/careers/industries'),
+
+  getSkillsByIndustry: (industryId) => api.get(`/careers/industries/${industryId}/skills`),
+
+  getQuizByIndustry: (industryId) => api.get(`/careers/industries/${industryId}/quiz`),
+
+  recommendCareer: (data) => api.post('/careers/recommend', data)
 };
 
 // Helper functions for token management

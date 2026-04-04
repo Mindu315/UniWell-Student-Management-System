@@ -108,7 +108,7 @@ const AdminUsers = () => {
     return (
       <div>
         <Navbar />
-        <div className="container">
+        <div className="container dashboard-main unified-page-shell">
           <div className="loading">Loading...</div>
         </div>
       </div>
@@ -118,7 +118,7 @@ const AdminUsers = () => {
   return (
     <div>
       <Navbar />
-      <div className="container">
+      <div className="container dashboard-main unified-page-shell admin-page-shell">
         <div className="page-header">
           <h1>User Management</h1>
           <p>Manage all registered users</p>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -176,6 +176,8 @@ const StressManagementPage = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [error, setError] = useState('');
   const [activeInterface, setActiveInterface] = useState('daily');
+  const trendChartRef = useRef(null);
+  const [showTrendChart, setShowTrendChart] = useState(false);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -195,6 +197,30 @@ const StressManagementPage = () => {
 
     fetchHistory();
   }, []);
+
+  useEffect(() => {
+    if (activeInterface !== 'insights') {
+      setShowTrendChart(false);
+      if (trendChartRef.current) {
+        trendChartRef.current.destroy();
+        trendChartRef.current = null;
+      }
+      return undefined;
+    }
+
+    const frameId = window.requestAnimationFrame(() => {
+      setShowTrendChart(true);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      setShowTrendChart(false);
+      if (trendChartRef.current) {
+        trendChartRef.current.destroy();
+        trendChartRef.current = null;
+      }
+    };
+  }, [activeInterface]);
 
   const handleMetricChange = (field, value) => {
     setFormData((prev) => ({
@@ -371,9 +397,8 @@ const StressManagementPage = () => {
         ]
       },
       options: {
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: false,
-        resizeDelay: 120,
         animation: {
           duration: 550,
           easing: 'easeOutQuart'
@@ -682,11 +707,17 @@ const StressManagementPage = () => {
 
               <div className="stress-mini-trend">
                 <div className="stress-line-chart">
-                  <Line
-                    data={weeklyTrendChart.data}
-                    options={weeklyTrendChart.options}
-                    aria-label="Seven day wellbeing score trend"
-                  />
+                  {showTrendChart ? (
+                    <Line
+                      ref={trendChartRef}
+                      data={weeklyTrendChart.data}
+                      options={weeklyTrendChart.options}
+                      width={640}
+                      height={220}
+                      redraw
+                      aria-label="Seven day wellbeing score trend"
+                    />
+                  ) : null}
 
                   {!weeklyTrendChart.hasAnyData && (
                     <p className="trend-no-data">No check-ins available for this 7-day window yet.</p>

@@ -137,7 +137,7 @@ const Flashcards = () => {
     <div>
       <Navbar />
 
-      <div className="container">
+      <div className="container dashboard-main unified-page-shell flashcards-page-shell">
         <div className="page-header">
           <h1>Flashcards 🃏</h1>
           <p>Create study cards and flip to reveal answers.</p>
@@ -184,4 +184,3 @@ const Flashcards = () => {
 };
 
 export default Flashcards;
-

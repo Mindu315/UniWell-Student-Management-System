@@ -1,31 +1,3 @@
-/**
- * SLIIT Stress Management System - Backend Server
- * Simple User Management System
- * 
- * Student: [Your Name]
- * ID: [Your Student ID]
- * 
- * HOW TO RUN:
- * 1. Install dependencies: npm install
- * 2. Create .env file (copy from .env.example)
- * 3. Make sure MongoDB is running
- * 4. Run development server: npm run dev
- * 5. Or run production: npm start
- * 
- * API ENDPOINTS:
- * 
- * Auth Routes:
- * - POST /api/auth/register  - Register new user
- * - POST /api/auth/login     - Login user
- * - GET  /api/auth/me        - Get current user (Protected)
- * 
- * User Routes:
- * - PUT    /api/users/me     - Update my profile (Protected)
- * - GET    /api/users        - Get all users (Admin only)
- * - PUT    /api/users/:id    - Update user (Admin only)
- * - DELETE /api/users/:id    - Delete user (Admin only)
- */
-
 // Load environment variables from .env file
 require('dotenv').config();
 
@@ -33,6 +5,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const { connectCareerDB } = require('./config/careerDb');
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
@@ -40,12 +13,17 @@ const userRoutes = require('./routes/userRoutes');
 const flashcardRoutes = require('./routes/flashcardRoutes');
 const aiQuizRoutes = require('./routes/aiQuizRoutes');
 const wellbeingRoutes = require('./routes/wellbeingRoutes');
+const careerRoutes = require('./routes/careerRoutes');
 
 // Create Express app
 const app = express();
 
-// Connect to MongoDB database
+// Connect to MongoDB databases
 connectDB();
+connectCareerDB().catch((error) => {
+  console.error(`❌ Career MongoDB Connection Error: ${error.message}`);
+  process.exit(1);
+});
 
 // Middleware
 app.use(express.json()); // Parse JSON request body
@@ -63,6 +41,7 @@ app.use('/api/users', userRoutes); // User routes (profile, admin operations)
 app.use('/api/flashcards', flashcardRoutes); // Flashcard CRUD routes (protected)
 app.use('/api/ai-quizzes', aiQuizRoutes); // AI quiz generator routes (protected)
 app.use('/api/wellbeing', wellbeingRoutes); // Wellbeing routes (check-ins)
+app.use('/api/careers', careerRoutes); // Career guidance routes (protected)
 
 // Welcome route
 app.get('/', (req, res) => {
@@ -99,6 +78,12 @@ app.get('/', (req, res) => {
       wellbeing: {
         createCheckIn: 'POST /api/wellbeing/check-ins (Protected)',
         getCheckIns: 'GET /api/wellbeing/check-ins (Protected)'
+      },
+      careers: {
+        industries: 'GET /api/careers/industries (Protected)',
+        skills: 'GET /api/careers/industries/:industryId/skills (Protected)',
+        quiz: 'GET /api/careers/industries/:industryId/quiz (Protected)',
+        recommend: 'POST /api/careers/recommend (Protected)'
       }
     }
   });
@@ -129,51 +114,3 @@ app.listen(PORT, () => {
   console.log(`📍 API URL: http://localhost:${PORT}`);
   console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
-
-/**
- * TESTING WITH POSTMAN/THUNDER CLIENT:
- * 
- * 1. Register a user:
- *    POST http://localhost:5000/api/auth/register
- *    Body (JSON):
- *    {
- *      "fullName": "John Doe",
- *      "email": "john@sliit.lk",
- *      "password": "password123",
- *      "studentId": "IT21234567",
- *      "faculty": "Computing",
- *      "degreeProgram": "BSc (Hons) in IT",
- *      "year": 2
- *    }
- * 
- * 2. Login:
- *    POST http://localhost:5000/api/auth/login
- *    Body (JSON):
- *    {
- *      "email": "john@sliit.lk",
- *      "password": "password123"
- *    }
- *    Response will include token - copy it!
- * 
- * 3. Get current user (Protected):
- *    GET http://localhost:5000/api/auth/me
- *    Headers:
- *    Authorization: Bearer <your_token_here>
- * 
- * 4. Update my profile:
- *    PUT http://localhost:5000/api/users/me
- *    Headers:
- *    Authorization: Bearer <your_token_here>
- *    Body (JSON):
- *    {
- *      "fullName": "John Updated",
- *      "year": 3
- *    }
- * 
- * 5. Get all users (Admin only):
- *    GET http://localhost:5000/api/users
- *    Headers:
- *    Authorization: Bearer <admin_token_here>
- * 
- * Note: To test admin routes, manually change a user's role to "admin" in MongoDB
- */

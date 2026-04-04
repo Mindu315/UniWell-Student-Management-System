@@ -1,0 +1,37 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle with Gradient -->
+  <defs>
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3FB36B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2F6DB2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="lotusGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF9A3C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F45A8D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="95" fill="url(#mainGradient)"/>
+  
+  <!-- Lotus Flower Symbol (Wellness) -->
+  <path d="M100 60 C90 70, 80 85, 80 95 C80 100, 85 105, 90 105 L110 105 C115 105, 120 100, 120 95 C120 85, 110 70, 100 60 Z" 
+        fill="url(#lotusGradient)" opacity="0.9"/>
+  
+  <!-- Brain/AI Symbol (right side) -->
+  <circle cx="130" cy="100" r="15" fill="#6BD46B" opacity="0.8"/>
+  <path d="M130 90 Q135 95 130 100 Q125 95 130 90" fill="#B7E55E" opacity="0.8"/>
+  
+  <!-- Book/Academic Symbol (left side) -->
+  <rect x="60" y="90" width="25" height="20" rx="2" fill="white" opacity="0.9"/>
+  <line x1="65" y1="95" x2="80" y2="95" stroke="#2F6DB2" stroke-width="2"/>
+  <line x1="65" y1="100" x2="80" y2="100" stroke="#2F6DB2" stroke-width="2"/>
+  <line x1="65" y1="105" x2="80" y2="105" stroke="#2F6DB2" stroke-width="2"/>
+  
+  <!-- Heart Symbol (Wellness - bottom) -->
+  <path d="M100 140 L90 130 C88 128, 88 125, 90 123 C92 121, 95 121, 97 123 L100 126 L103 123 C105 121, 108 121, 110 123 C112 125, 112 128, 110 130 Z" 
+        fill="#F45A8D" opacity="0.9"/>
+  
+  <!-- Text "U" -->
+  <text x="100" y="115" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="white" text-anchor="middle">U</text>
+</svg>

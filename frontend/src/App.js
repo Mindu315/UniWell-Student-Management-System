@@ -1,7 +1,3 @@
-/**
- * Main App Component
- * Sets up routing for the application
- */
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -10,10 +6,19 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import Analysis from './pages/Analysis';
 import AdminUsers from './pages/AdminUsers';
 import Flashcards from './pages/Flashcards';
 import AIQuizzes from './pages/AIQuizzes';
 import StressManagementPage from './pages/StressManagementPage';
+import AcademicPerformancePage from './pages/CalculatorDashboard';
+import CareerGuidance from './pages/CareerGuidance';
+import CareerProcess from './pages/CareerProcess';
+import IndustryQuiz from './pages/IndustryQuiz';
+import Results from './pages/Results';
+import SalaryTrends from './pages/SalaryTrends';
+import CourseSuggestions from './pages/CourseSuggestions';
 import './styles.css';
 
 function App() {
@@ -43,6 +48,22 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/settings" 
+            element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/analysis" 
+            element={
+              <ProtectedRoute>
+                <Analysis />
+              </ProtectedRoute>
+            } 
+          />
           <Route
             path="/stress-management"
             element={
@@ -51,6 +72,72 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/academic-performance"
+            element={
+              <ProtectedRoute>
+                <AcademicPerformancePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/academic-performance/:specialization/:syllabusType"
+            element={
+              <ProtectedRoute>
+                <AcademicPerformancePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/career-guidance"
+            element={
+              <ProtectedRoute>
+                <CareerGuidance />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/career-process"
+            element={
+              <ProtectedRoute>
+                <CareerProcess />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/industry-quiz"
+            element={
+              <ProtectedRoute>
+                <IndustryQuiz />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/results"
+            element={
+              <ProtectedRoute>
+                <Results />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/salary-trends"
+            element={
+              <ProtectedRoute>
+                <SalaryTrends />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/course-suggestions"
+            element={
+              <ProtectedRoute>
+                <CourseSuggestions />
+              </ProtectedRoute>
+            }
+          />
+          
+
 
           {/* Admin Only Routes */}
           <Route 
@@ -89,4 +176,3 @@ function App() {
 }
 
 export default App;
-

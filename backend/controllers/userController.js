@@ -5,6 +5,19 @@
 
 const User = require('../models/User');
 
+const serializeUser = (user) => ({
+  _id: user._id,
+  fullName: user.fullName,
+  email: user.email,
+  studentId: user.studentId,
+  faculty: user.faculty,
+  degreeProgram: user.degreeProgram,
+  year: user.year,
+  role: user.role,
+  settings: user.settings,
+  createdAt: user.createdAt
+});
+
 /**
  * @route   PUT /api/users/me
  * @desc    Update current user's profile
@@ -36,16 +49,7 @@ const updateMe = async (req, res) => {
       success: true,
       message: 'Profile updated successfully',
       data: {
-        user: {
-          _id: user._id,
-          fullName: user.fullName,
-          email: user.email,
-          studentId: user.studentId,
-          faculty: user.faculty,
-          degreeProgram: user.degreeProgram,
-          year: user.year,
-          role: user.role
-        }
+        user: serializeUser(user)
       }
     });
   } catch (error) {
@@ -119,16 +123,7 @@ const updateUserById = async (req, res) => {
       success: true,
       message: 'User updated successfully',
       data: {
-        user: {
-          _id: user._id,
-          fullName: user.fullName,
-          email: user.email,
-          studentId: user.studentId,
-          faculty: user.faculty,
-          degreeProgram: user.degreeProgram,
-          year: user.year,
-          role: user.role
-        }
+        user: serializeUser(user)
       }
     });
   } catch (error) {
@@ -174,8 +169,87 @@ const deleteUserById = async (req, res) => {
   }
 };
 
+const getMySettings = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Settings retrieved successfully',
+      data: {
+        settings: user.settings
+      }
+    });
+  } catch (error) {
+    console.error('Get my settings error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error retrieving settings',
+      error: error.message
+    });
+  }
+};
+
+const updateMySettings = async (req, res) => {
+  try {
+    const {
+      theme,
+      dashboardView,
+      emailNotifications,
+      wellbeingReminders,
+      studyReminders
+    } = req.body;
+
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    if (!user.settings) {
+      user.settings = {};
+    }
+
+    if (theme) user.settings.theme = theme;
+    if (dashboardView) user.settings.dashboardView = dashboardView;
+    if (typeof emailNotifications === 'boolean') user.settings.emailNotifications = emailNotifications;
+    if (typeof wellbeingReminders === 'boolean') user.settings.wellbeingReminders = wellbeingReminders;
+    if (typeof studyReminders === 'boolean') user.settings.studyReminders = studyReminders;
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Settings updated successfully',
+      data: {
+        settings: user.settings,
+        user: serializeUser(user)
+      }
+    });
+  } catch (error) {
+    console.error('Update my settings error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error updating settings',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   updateMe,
+  getMySettings,
+  updateMySettings,
   getAllUsers,
   updateUserById,
   deleteUserById

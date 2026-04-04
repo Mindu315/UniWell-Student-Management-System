@@ -1,0 +1,420 @@
+[
+  {
+    "moduleCode": "IT1010",
+    "moduleName": "Introduction to Programming",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT1020",
+    "moduleName": "Introduction to Computer Systems",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT1030",
+    "moduleName": "Mathematics for Computing",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT1040",
+    "moduleName": "Communication Skills",
+    "credits": 3,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT1050",
+    "moduleName": "Object Oriented Concepts",
+    "credits": 2,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT1060",
+    "moduleName": "Software Process Modeling",
+    "credits": 3,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT1080",
+    "moduleName": "English for Academic Purposes",
+    "credits": 3,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT1090",
+    "moduleName": "Information Systems and Data Modeling",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT1100",
+    "moduleName": "Internet and Web Technologies",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE2012",
+    "moduleName": "Systems and Network Programming",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE2022",
+    "moduleName": "Introduction to Cyber Security",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE2032",
+    "moduleName": "Secure Operating Systems",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE2042",
+    "moduleName": "Database Management Systems for Security",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE2052",
+    "moduleName": "Advanced Networking Technologies",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE2062",
+    "moduleName": "Web Security",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE2072",
+    "moduleName": "Foundations of Algorithms",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT2090",
+    "moduleName": "Professional Skills",
+    "credits": 2,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT2100",
+    "moduleName": "Employability Skills Development - Seminar",
+    "credits": 1,
+    "year": 2,
+    "semester": 2,
+    "isGPA": false,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE2082",
+    "moduleName": "Discrete Mathematics",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE3022",
+    "moduleName": "Applied Information Assurance",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE3032",
+    "moduleName": "Network Security",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE3042",
+    "moduleName": "Secure Software Systems",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE3052",
+    "moduleName": "Information Security Risk Management",
+    "credits": 2,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE3112",
+    "moduleName": "Mobile Security",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT3050",
+    "moduleName": "Employee Skills Development - Seminar",
+    "credits": 1,
+    "year": 3,
+    "semester": 1,
+    "isGPA": false,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE3062",
+    "moduleName": "Data and Operating System Security",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE3072",
+    "moduleName": "Information Security Policy and Management",
+    "credits": 2,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE3082",
+    "moduleName": "Cryptography",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE3092",
+    "moduleName": "Information Security Project",
+    "credits": 3,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE3102",
+    "moduleName": "Enterprise Standards for Information Security",
+    "credits": 2,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT3110",
+    "moduleName": "Industry Placement",
+    "credits": 8,
+    "year": 3,
+    "semester": 2,
+    "isGPA": false,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT4010",
+    "moduleName": "Research Project",
+    "credits": 16,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IT4070",
+    "moduleName": "Preparation for the Professional World",
+    "credits": 2,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE4012",
+    "moduleName": "Offensive Hacking: Tactical and Strategic",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "isElective": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE4022",
+    "moduleName": "Security Economic Analysis",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "isElective": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE4062",
+    "moduleName": "Cyber Forensics and Incident Response",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "isElective": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE4092",
+    "moduleName": "Machine Learning for Cyber Security",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "isElective": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE4032",
+    "moduleName": "Information Warfare",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "isElective": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE4052",
+    "moduleName": "Hardware Security",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "isElective": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE4072",
+    "moduleName": "Governance and Cyber Law Clinic",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "isElective": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  },
+  {
+    "moduleCode": "IE4042",
+    "moduleName": "Secure Software Engineering",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "isElective": true,
+    "syllabusVersion": "OLD",
+    "specialization": "CYBER"
+  }
+]

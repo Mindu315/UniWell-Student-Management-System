@@ -52,6 +52,30 @@ const userSchema = new mongoose.Schema({
     enum: ['student', 'admin'],
     default: 'student'
   },
+  settings: {
+    theme: {
+      type: String,
+      enum: ['light', 'system'],
+      default: 'light'
+    },
+    dashboardView: {
+      type: String,
+      enum: ['overview', 'focus'],
+      default: 'overview'
+    },
+    emailNotifications: {
+      type: Boolean,
+      default: true
+    },
+    wellbeingReminders: {
+      type: Boolean,
+      default: true
+    },
+    studyReminders: {
+      type: Boolean,
+      default: false
+    }
+  },
   createdAt: {
     type: Date,
     default: Date.now

@@ -88,8 +88,14 @@ const validateQuizJson = (quizJson) => {
 };
 
 const extractTextFromPdfBuffer = async (buffer) => {
-  const parsed = await pdfParse(buffer);
-  return parsed?.text || '';
+  const parser = new PDFParse({ data: buffer });
+
+  try {
+    const parsed = await parser.getText();
+    return parsed?.text || '';
+  } finally {
+    await parser.destroy();
+  }
 };
 
 /**
