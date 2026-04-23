@@ -6,6 +6,7 @@ import {
   PieChart, Pie, Cell,
   AreaChart, Area,
   RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
+  ComposedChart, ReferenceLine, Legend,
 } from 'recharts';
 
 // Import all syllabus JSON files
@@ -100,10 +101,25 @@ const DeltaTooltip = ({ active, payload, label }) => {
   );
 };
 
+const GradeBarTooltip = ({ active, payload, label }) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-white/98 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-xl border border-gray-100/80">
+      <p className="text-[11px] font-bold text-[#6B7280] mb-1.5 uppercase tracking-wider">{label}</p>
+      {payload.map((entry, idx) => (
+        <div key={idx} className="flex items-center gap-2 mt-1">
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: entry.fill }} />
+          <p className="text-sm font-bold text-[#1C2A39]">{entry.value} module{entry.value !== 1 ? 's' : ''}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 // ── Reusable UI Components ──
 
-const ChartCard = ({ title, subtitle, children, accent, action }) => (
-  <div className="rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
+const ChartCard = ({ title, subtitle, children, accent, action, className = '' }) => (
+  <div className={`rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden ${className}`}>
     {accent && <div className="h-1" style={{ background: accent }} />}
     <div className="p-4 sm:p-6">
       <div className="flex items-start justify-between mb-4">
@@ -158,11 +174,80 @@ const SectionHeader = ({ title, subtitle }) => (
 
 // ── Classification Badge ──
 const classificationInfo = {
-  'First Class Honours': { color: '#2BB673', bg: 'bg-[#2BB673]/10', border: 'border-[#2BB673]/25', minGPA: 3.7, nextTarget: null },
-  'Second Class Upper': { color: '#1F5F73', bg: 'bg-[#1F5F73]/10', border: 'border-[#1F5F73]/25', minGPA: 3.3, nextTarget: 3.7 },
-  'Second Class Lower': { color: '#1E3A5F', bg: 'bg-[#1E3A5F]/10', border: 'border-[#1E3A5F]/25', minGPA: 3.0, nextTarget: 3.3 },
-  'General Pass': { color: '#F2994A', bg: 'bg-[#F2994A]/10', border: 'border-[#F2994A]/25', minGPA: 2.0, nextTarget: 3.0 },
-  'Below Standard': { color: '#ef4444', bg: 'bg-red-50', border: 'border-red-200', minGPA: 0, nextTarget: 2.0 },
+  'First Class Honours':  { color: '#2BB673', bg: 'bg-[#2BB673]/10', border: 'border-[#2BB673]/25', minGPA: 3.7, nextTarget: null },
+  'Second Class Upper':   { color: '#1F5F73', bg: 'bg-[#1F5F73]/10', border: 'border-[#1F5F73]/25', minGPA: 3.3, nextTarget: 3.7 },
+  'Second Class Lower':   { color: '#1E3A5F', bg: 'bg-[#1E3A5F]/10', border: 'border-[#1E3A5F]/25', minGPA: 3.0, nextTarget: 3.3 },
+  'General Pass':         { color: '#F2994A', bg: 'bg-[#F2994A]/10', border: 'border-[#F2994A]/25', minGPA: 2.0, nextTarget: 3.0 },
+  'Below Standard':       { color: '#ef4444', bg: 'bg-red-50',        border: 'border-red-200',         minGPA: 0,   nextTarget: 2.0 },
+};
+
+// ── Mini Sparkline for semester cards ──
+const MiniSparkline = ({ data, color }) => {
+  if (!data || data.length < 2) return null;
+  const max = 4;
+  const w = 80, h = 32;
+  const pts = data.map((d, i) => {
+    const x = (i / (data.length - 1)) * w;
+    const y = h - (d.GPA / max) * h;
+    return `${x},${y}`;
+  }).join(' ');
+  return (
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="overflow-visible">
+      <polyline points={pts} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.7" />
+      {data.map((d, i) => {
+        const x = (i / (data.length - 1)) * w;
+        const y = h - (d.GPA / max) * h;
+        return <circle key={i} cx={x} cy={y} r="2.5" fill={color} />;
+      })}
+    </svg>
+  );
+};
+
+// ── GPA Gauge Chart ──
+const GpaGauge = ({ gpa, size = 160 }) => {
+  const pct = gpa / 4;
+  const angle = -135 + pct * 270;
+  const r = size * 0.38;
+  const cx = size / 2, cy = size * 0.58;
+
+  const polarToCart = (angleDeg, radius) => {
+    const rad = (angleDeg * Math.PI) / 180;
+    return { x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad) };
+  };
+
+  const arc = (startAngle, endAngle, outerR, innerR) => {
+    const s = polarToCart(startAngle, outerR);
+    const e = polarToCart(endAngle, outerR);
+    const si = polarToCart(startAngle, innerR);
+    const ei = polarToCart(endAngle, innerR);
+    const large = Math.abs(endAngle - startAngle) > 180 ? 1 : 0;
+    return `M ${s.x} ${s.y} A ${outerR} ${outerR} 0 ${large} 1 ${e.x} ${e.y} L ${ei.x} ${ei.y} A ${innerR} ${innerR} 0 ${large} 0 ${si.x} ${si.y} Z`;
+  };
+
+  const zones = [
+    { from: -135, to: -40.25, color: '#ef4444' },   // 0–1
+    { from: -40.25, to: 54.5, color: '#F2994A' },   // 1–2
+    { from: 54.5, to: 81.375, color: '#1F5F73' },   // 2–3
+    { from: 81.375, to: 135, color: '#2BB673' },     // 3–4
+  ];
+
+  const needleEnd = polarToCart(angle - 90, r * 0.75);
+  const color = getGradeRingColor(gpa);
+
+  return (
+    <svg width={size} height={size * 0.65} viewBox={`0 0 ${size} ${size * 0.65}`}>
+      {zones.map((z, i) => (
+        <path key={i} d={arc(z.from, z.to, r, r * 0.65)} fill={z.color} opacity="0.18" />
+      ))}
+      <path d={arc(-135, angle - 90, r, r * 0.65)} fill={color} opacity="0.9" />
+      {/* Needle */}
+      <line x1={cx} y1={cy} x2={needleEnd.x} y2={needleEnd.y}
+        stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx={cx} cy={cy} r="4" fill={color} />
+      <text x={cx} y={cy - r * 1.12} textAnchor="middle" fontSize="11" fill="#9CA3AF" fontWeight="700">4.0</text>
+      <text x={cx - r * 1.1} y={cy + 4} textAnchor="middle" fontSize="11" fill="#9CA3AF" fontWeight="700">0.0</text>
+    </svg>
+  );
 };
 
 // ── Main Component ──
@@ -173,6 +258,7 @@ const Analyzer = ({ selectedGrades }) => {
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [expandedYear, setExpandedYear] = useState(null);
+  const [gradeView, setGradeView] = useState('bar'); // 'bar' | 'donut'
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 80);
@@ -254,6 +340,18 @@ const Analyzer = ({ selectedGrades }) => {
       if (count > 0) distData.push({ name: groupLabel, value: count, color: groupColors[groupLabel] });
     });
 
+    // ── Individual grade bar data ──
+    const gradeOrder = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'E'];
+    const gradeBarData = gradeOrder
+      .filter((g) => gradeCounts[g])
+      .map((g) => ({
+        grade: g,
+        count: gradeCounts[g] || 0,
+        color: ['A+','A','A-'].includes(g) ? '#2BB673' :
+               ['B+','B','B-'].includes(g) ? '#1F5F73' :
+               ['C+','C','C-'].includes(g) ? '#F2994A' : '#ef4444',
+      }));
+
     const creditsTotalVal = syllabusData.reduce((sum, m) => sum + m.credits, 0);
     const overallCGPA = cumulativeCredits > 0 ? cumulativePoints / cumulativeCredits : 0;
 
@@ -267,6 +365,13 @@ const Analyzer = ({ selectedGrades }) => {
     const semesterDeltas = semesterArr.map((sem, i) => ({
       ...sem,
       delta: i > 0 ? parseFloat((sem.GPA - semesterArr[i - 1].GPA).toFixed(2)) : 0,
+    }));
+
+    // ── Combined GPA + CGPA for dual-line chart ──
+    const combinedTrendData = semesterArr.map((sem, i) => ({
+      name: sem.name,
+      GPA: sem.GPA,
+      CGPA: cgpaArr[i]?.CGPA || null,
     }));
 
     // ── Consistency score ──
@@ -324,6 +429,15 @@ const Analyzer = ({ selectedGrades }) => {
       return { year: yr, gpa: yearGPA, totalModules: mods.length, gradedModules: graded.length, aCount, failMods };
     });
 
+    // ── Year bar data ──
+    const yearBarData = yearBreakdown
+      .filter((y) => y.gpa !== null)
+      .map((y) => ({
+        name: `Year ${y.year}`,
+        GPA: parseFloat(y.gpa.toFixed(2)),
+        fill: getGradeRingColor(y.gpa),
+      }));
+
     // ── Insights ──
     const insights = [];
     if (semesterArr.length >= 2) {
@@ -376,14 +490,22 @@ const Analyzer = ({ selectedGrades }) => {
       .filter((y) => y.gpa !== null)
       .map((y) => ({ subject: `Year ${y.year}`, GPA: parseFloat(y.gpa.toFixed(2)), fullMark: 4 }));
 
+    // ── Credit efficiency: A pts per credit ──
+    const creditEfficiency = modsCompleted > 0
+      ? parseFloat(((aCount / modsCompleted) * 100).toFixed(1))
+      : 0;
+
     return {
       semesterData: semesterArr, cgpaProgressData: cgpaArr, gradeDistribution: distData,
+      gradeBarData, combinedTrendData,
       creditsEarned: creditsEarnedVal, creditsTotal: creditsTotalVal,
       modulesCompleted: modsCompleted, modulesTotal: syllabusData.length,
       overallCGPA, bestSem, worstSem, semesterDeltas,
       consistency, classification, classStyle, topModules, bottomModules,
       creditsByTier, insights, heaviestHitter, completionPct,
-      yearBreakdown, passCount, failCount: failCountVal, neededForUpgrade, radarData,
+      yearBreakdown, yearBarData,
+      passCount, failCount: failCountVal, neededForUpgrade, radarData,
+      creditEfficiency,
     };
   }, [selectedGrades, syllabusData]);
 
@@ -415,11 +537,14 @@ const Analyzer = ({ selectedGrades }) => {
   }
 
   const {
-    semesterData, cgpaProgressData, gradeDistribution, creditsEarned, creditsTotal,
+    semesterData, cgpaProgressData, gradeDistribution, gradeBarData, combinedTrendData,
+    creditsEarned, creditsTotal,
     modulesCompleted, modulesTotal, overallCGPA, bestSem, worstSem, semesterDeltas,
     consistency, classification, classStyle, topModules, bottomModules,
     creditsByTier, insights, heaviestHitter, completionPct,
-    yearBreakdown, passCount, failCount, neededForUpgrade, radarData,
+    yearBreakdown, yearBarData,
+    passCount, failCount, neededForUpgrade, radarData,
+    creditEfficiency,
   } = analytics;
 
   const fadeIn = (delay = 0) => ({
@@ -550,10 +675,11 @@ const Analyzer = ({ selectedGrades }) => {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition-all duration-200 ${activeTab === tab.id
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition-all duration-200 ${
+              activeTab === tab.id
                 ? 'bg-white text-[#1C2A39] shadow-sm'
                 : 'text-[#9CA3AF] hover:text-[#6B7280]'
-              }`}
+            }`}
           >
             <span>{tab.icon}</span>
             <span className="hidden sm:inline">{tab.label}</span>
@@ -602,6 +728,9 @@ const Analyzer = ({ selectedGrades }) => {
                 </div>
                 <p className="text-3xl font-black text-[#1C2A39]">{bestSem.GPA.toFixed(2)}</p>
                 <p className="text-xs text-[#6B7280] mt-0.5 font-medium">{bestSem.name}</p>
+                <div className="mt-3">
+                  <MiniSparkline data={semesterData} color="#2BB673" />
+                </div>
               </div>
             )}
             {worstSem && bestSem?.name !== worstSem?.name && (
@@ -612,6 +741,9 @@ const Analyzer = ({ selectedGrades }) => {
                 </div>
                 <p className="text-3xl font-black text-[#1C2A39]">{worstSem.GPA.toFixed(2)}</p>
                 <p className="text-xs text-[#6B7280] mt-0.5 font-medium">{worstSem.name}</p>
+                <div className="mt-3">
+                  <MiniSparkline data={semesterData} color="#ef4444" />
+                </div>
               </div>
             )}
             {heaviestHitter && (
@@ -626,48 +758,172 @@ const Analyzer = ({ selectedGrades }) => {
             )}
           </div>
 
-          {/* ── Pass vs Fail Summary ── */}
-          <div style={fadeIn(160)}>
-            <ChartCard
-              title="Pass / Fail Summary"
-              subtitle="Module outcome breakdown"
-              accent="linear-gradient(90deg, #2BB673, #ef4444)"
-            >
-              <div className="flex items-center gap-4">
+          {/* ── GPA Gauge + Pass Summary side by side ── */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" style={fadeIn(160)}>
+            {/* Gauge */}
+            <ChartCard title="GPA Gauge" subtitle="Visual position on the 0–4 scale" accent="linear-gradient(90deg, #1E3A5F, #2BB673)">
+              <div className="flex flex-col items-center gap-2 py-2">
+                <GpaGauge gpa={overallCGPA} size={200} />
+                <div className="flex gap-6 mt-1">
+                  {[
+                    { label: 'Below Pass', color: '#ef4444' },
+                    { label: 'Pass', color: '#F2994A' },
+                    { label: '2nd+', color: '#1F5F73' },
+                    { label: '1st', color: '#2BB673' },
+                  ].map((z) => (
+                    <div key={z.label} className="flex items-center gap-1.5">
+                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: z.color }} />
+                      <span className="text-[10px] text-[#9CA3AF] font-medium">{z.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-[#6B7280] font-medium mt-1">
+                  Current CGPA: <span className="font-black text-[#1C2A39]">{overallCGPA.toFixed(2)}</span>
+                </p>
+              </div>
+            </ChartCard>
+
+            {/* Pass / Fail Summary */}
+            <ChartCard title="Pass / Fail Summary" subtitle="Module outcome breakdown" accent="linear-gradient(90deg, #2BB673, #ef4444)">
+              <div className="flex flex-col gap-4 h-full justify-center py-2">
+                {/* Radial rings */}
+                <div className="flex items-center justify-center gap-8">
+                  <div className="flex flex-col items-center gap-2">
+                    <GpaRing gpa={(passCount / Math.max(passCount + failCount, 1)) * 4} size={72} />
+                    <p className="text-xs font-bold text-[#2BB673]">{passCount} Passed</p>
+                  </div>
+                  <div className="text-2xl font-black text-[#9CA3AF]">vs</div>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="relative" style={{ width: 72, height: 72 }}>
+                      <svg width={72} height={72} className="-rotate-90" viewBox="0 0 36 36">
+                        <path d="M18 2.0845a15.9155 15.9155 0 0 1 0 31.831a15.9155 15.9155 0 0 1 0-31.831"
+                          fill="none" stroke="#f1f5f9" strokeWidth="3.5" />
+                        <path d="M18 2.0845a15.9155 15.9155 0 0 1 0 31.831a15.9155 15.9155 0 0 1 0-31.831"
+                          fill="none" stroke="#ef4444" strokeWidth="3.5"
+                          strokeDasharray={`${(failCount / Math.max(passCount + failCount, 1)) * 100}, 100`} strokeLinecap="round" />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="font-black text-[#1C2A39] leading-none text-base">{failCount}</span>
+                      </div>
+                    </div>
+                    <p className="text-xs font-bold text-red-500">{failCount} Failed</p>
+                  </div>
+                </div>
                 {/* Stacked bar */}
-                <div className="flex-1 h-8 rounded-full overflow-hidden flex">
+                <div className="h-6 rounded-full overflow-hidden flex mt-2">
                   {passCount > 0 && (
-                    <div
-                      className="h-full flex items-center justify-center text-[11px] font-black text-white transition-all duration-700"
-                      style={{ width: `${(passCount / (passCount + failCount)) * 100}%`, background: '#2BB673' }}
-                    >
-                      {passCount > 2 && `${passCount} passed`}
+                    <div className="h-full flex items-center justify-center text-[11px] font-black text-white transition-all duration-700"
+                      style={{ width: `${(passCount / (passCount + failCount)) * 100}%`, background: '#2BB673' }}>
+                      {passCount > 2 && `${passCount}P`}
                     </div>
                   )}
                   {failCount > 0 && (
-                    <div
-                      className="h-full flex items-center justify-center text-[11px] font-black text-white transition-all duration-700"
-                      style={{ width: `${(failCount / (passCount + failCount)) * 100}%`, background: '#ef4444' }}
-                    >
-                      {failCount > 0 && `${failCount} failed`}
+                    <div className="h-full flex items-center justify-center text-[11px] font-black text-white transition-all duration-700"
+                      style={{ width: `${(failCount / (passCount + failCount)) * 100}%`, background: '#ef4444' }}>
+                      {failCount > 0 && `${failCount}F`}
                     </div>
                   )}
                 </div>
-                <div className="shrink-0 text-right">
-                  <p className="text-xs font-bold text-[#2BB673]">{passCount} passed</p>
-                  <p className="text-xs font-bold text-red-500">{failCount} failed</p>
-                </div>
+                {failCount > 0 && (
+                  <div className="mt-2 p-3 rounded-xl bg-red-50/60 border border-red-100 text-xs text-red-600 font-medium">
+                    ⚠️ You have {failCount} failed module{failCount > 1 ? 's' : ''}. Retaking can significantly improve your CGPA.
+                  </div>
+                )}
               </div>
-              {failCount > 0 && (
-                <div className="mt-4 p-3 rounded-xl bg-red-50/60 border border-red-100 text-xs text-red-600 font-medium">
-                  ⚠️ You have {failCount} failed module{failCount > 1 ? 's' : ''}. Retaking these can significantly improve your CGPA.
+            </ChartCard>
+          </div>
+
+          {/* ── Grade Distribution — toggleable Bar / Donut ── */}
+          <div style={fadeIn(200)}>
+            <ChartCard
+              title="Grade Distribution"
+              subtitle="Breakdown of all module grades"
+              accent="linear-gradient(90deg, #1E3A5F, #F2994A)"
+              action={
+                <div className="flex gap-1 p-1 bg-[#F7F9FB] rounded-xl">
+                  {['bar', 'donut'].map((v) => (
+                    <button key={v} onClick={() => setGradeView(v)}
+                      className={`px-3 py-1 rounded-lg text-[11px] font-bold transition-all duration-200 ${gradeView === v ? 'bg-white text-[#1C2A39] shadow-sm' : 'text-[#9CA3AF]'}`}>
+                      {v === 'bar' ? '▬' : '◎'} {v.charAt(0).toUpperCase() + v.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              }
+            >
+              {gradeView === 'bar' ? (
+                <ResponsiveContainer width="100%" height={220}>
+                  <BarChart data={gradeBarData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#F7F9FB" vertical={false} />
+                    <XAxis dataKey="grade" tick={{ fontSize: 11, fill: '#6B7280', fontWeight: 700 }} axisLine={false} tickLine={false} />
+                    <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: '#6B7280' }} axisLine={false} tickLine={false} />
+                    <Tooltip content={<GradeBarTooltip />} cursor={{ fill: '#F7F9FB', radius: 6 }} />
+                    <Bar dataKey="count" radius={[6, 6, 0, 0]} maxBarSize={40}>
+                      {gradeBarData.map((entry, i) => (
+                        <Cell key={i} fill={entry.color} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex flex-col sm:flex-row items-center gap-6">
+                  <ResponsiveContainer width="100%" height={220} className="max-w-[220px]">
+                    <PieChart>
+                      <Pie data={gradeDistribution} cx="50%" cy="50%" innerRadius={50} outerRadius={88} paddingAngle={4} dataKey="value" stroke="none">
+                        {gradeDistribution.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
+                      </Pie>
+                      <Tooltip content={({ active, payload }) => {
+                        if (!active || !payload?.length) return null;
+                        const d = payload[0].payload;
+                        return (
+                          <div className="bg-white/98 rounded-xl px-3 py-2.5 shadow-lg border border-gray-100">
+                            <p className="text-xs font-bold text-[#1C2A39]">{d.name}</p>
+                            <p className="text-xs text-[#6B7280]">{d.value} module{d.value > 1 ? 's' : ''}</p>
+                          </div>
+                        );
+                      }} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="flex flex-wrap sm:flex-col gap-2.5 justify-center">
+                    {gradeDistribution.map((d) => (
+                      <div key={d.name} className="flex items-center gap-2">
+                        <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
+                        <span className="text-xs text-[#6B7280]">
+                          {d.name} <span className="font-bold text-[#1C2A39]">({d.value})</span>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </ChartCard>
           </div>
 
-          {/* ── Year-by-Year Breakdown ── */}
-          <div style={fadeIn(200)}>
+          {/* ── Year-by-Year Bar Chart ── */}
+          {yearBarData.length > 0 && (
+            <div style={fadeIn(230)}>
+              <ChartCard title="GPA by Academic Year" subtitle="Year-over-year performance comparison" accent="linear-gradient(90deg, #1E3A5F, #2BB673)">
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={yearBarData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#F7F9FB" vertical={false} />
+                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#6B7280', fontWeight: 700 }} axisLine={false} tickLine={false} />
+                    <YAxis domain={[0, 4]} tick={{ fontSize: 11, fill: '#6B7280' }} axisLine={false} tickLine={false} />
+                    <Tooltip content={<CustomTooltip />} cursor={{ fill: '#F7F9FB', radius: 8 }} />
+                    <ReferenceLine y={3.7} stroke="#2BB673" strokeDasharray="4 3" strokeWidth={1.5} label={{ value: '1st', position: 'insideTopRight', fontSize: 10, fill: '#2BB673' }} />
+                    <ReferenceLine y={3.3} stroke="#1F5F73" strokeDasharray="4 3" strokeWidth={1.5} label={{ value: '2U', position: 'insideTopRight', fontSize: 10, fill: '#1F5F73' }} />
+                    <ReferenceLine y={2.0} stroke="#F2994A" strokeDasharray="4 3" strokeWidth={1.5} label={{ value: 'Pass', position: 'insideTopRight', fontSize: 10, fill: '#F2994A' }} />
+                    <Bar dataKey="GPA" radius={[8, 8, 0, 0]} maxBarSize={52}>
+                      {yearBarData.map((entry, i) => (
+                        <Cell key={i} fill={entry.fill} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartCard>
+            </div>
+          )}
+
+          {/* ── Year-by-Year Breakdown (accordion) ── */}
+          <div style={fadeIn(260)}>
             <SectionHeader title="Year by Year" subtitle="Expand to see details" />
             <div className="space-y-2">
               {yearBreakdown.map((yr) => (
@@ -733,41 +989,6 @@ const Analyzer = ({ selectedGrades }) => {
             </div>
           </div>
 
-          {/* ── Grade Distribution Donut ── */}
-          <div style={fadeIn(240)}>
-            <ChartCard title="Grade Distribution" subtitle="Breakdown of all module grades received" accent="linear-gradient(90deg, #1E3A5F, #F2994A)">
-              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <ResponsiveContainer width="100%" height={240} className="max-w-[240px]">
-                  <PieChart>
-                    <Pie data={gradeDistribution} cx="50%" cy="50%" innerRadius={52} outerRadius={88} paddingAngle={4} dataKey="value" stroke="none">
-                      {gradeDistribution.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
-                    </Pie>
-                    <Tooltip content={({ active, payload }) => {
-                      if (!active || !payload?.length) return null;
-                      const d = payload[0].payload;
-                      return (
-                        <div className="bg-white/98 rounded-xl px-3 py-2.5 shadow-lg border border-gray-100">
-                          <p className="text-xs font-bold text-[#1C2A39]">{d.name}</p>
-                          <p className="text-xs text-[#6B7280]">{d.value} module{d.value > 1 ? 's' : ''}</p>
-                        </div>
-                      );
-                    }} />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="flex flex-wrap sm:flex-col gap-2.5 justify-center">
-                  {gradeDistribution.map((d) => (
-                    <div key={d.name} className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
-                      <span className="text-xs text-[#6B7280]">
-                        {d.name} <span className="font-bold text-[#1C2A39]">({d.value})</span>
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </ChartCard>
-          </div>
-
         </div>
       )}
 
@@ -790,6 +1011,9 @@ const Analyzer = ({ selectedGrades }) => {
                   <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#6B7280', fontWeight: 600 }} axisLine={false} tickLine={false} />
                   <YAxis domain={[0, 4]} tick={{ fontSize: 11, fill: '#6B7280' }} axisLine={false} tickLine={false} />
                   <Tooltip content={<DeltaTooltip />} cursor={{ fill: '#F7F9FB', radius: 8 }} />
+                  <ReferenceLine y={3.7} stroke="#2BB673" strokeDasharray="4 3" strokeWidth={1.5} />
+                  <ReferenceLine y={3.3} stroke="#1F5F73" strokeDasharray="4 3" strokeWidth={1.5} />
+                  <ReferenceLine y={2.0} stroke="#F2994A" strokeDasharray="4 3" strokeWidth={1.5} />
                   <Bar dataKey="GPA" radius={[8, 8, 0, 0]} maxBarSize={48}>
                     {semesterDeltas.map((entry, index) => (
                       <Cell key={index} fill={entry.GPA >= 3.7 ? '#2BB673' : entry.GPA >= 3.0 ? '#1F5F73' : entry.GPA >= 2.0 ? '#F2994A' : '#ef4444'} />
@@ -800,9 +1024,10 @@ const Analyzer = ({ selectedGrades }) => {
               {semesterDeltas.length > 1 && (
                 <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-50">
                   {semesterDeltas.map((sem, i) => i > 0 && (
-                    <span key={sem.name} className={`inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full ${sem.delta > 0 ? 'bg-[#2BB673]/10 text-[#2BB673]' :
-                        sem.delta < 0 ? 'bg-red-50 text-red-600' : 'bg-[#F7F9FB] text-[#6B7280]'
-                      }`}>
+                    <span key={sem.name} className={`inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full ${
+                      sem.delta > 0 ? 'bg-[#2BB673]/10 text-[#2BB673]' :
+                      sem.delta < 0 ? 'bg-red-50 text-red-600' : 'bg-[#F7F9FB] text-[#6B7280]'
+                    }`}>
                       {sem.name}
                       {sem.delta > 0
                         ? <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" /></svg>
@@ -817,28 +1042,62 @@ const Analyzer = ({ selectedGrades }) => {
             </ChartCard>
           </div>
 
-          {/* ── CGPA Line ── */}
-          <div style={fadeIn(120)}>
-            <ChartCard title="CGPA Progress" subtitle="Cumulative GPA trend over semesters" accent="linear-gradient(90deg, #1F5F73, #2BB673)">
-              <ResponsiveContainer width="100%" height={260}>
-                <LineChart data={cgpaProgressData} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
+          {/* ── Dual Line: GPA + CGPA on one chart ── */}
+          <div style={fadeIn(110)}>
+            <ChartCard title="GPA vs CGPA Trend" subtitle="Semester GPA alongside cumulative CGPA — spot divergence at a glance" accent="linear-gradient(90deg, #1F5F73, #2BB673)">
+              <ResponsiveContainer width="100%" height={280}>
+                <ComposedChart data={combinedTrendData} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#F7F9FB" vertical={false} />
                   <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#6B7280', fontWeight: 600 }} axisLine={false} tickLine={false} />
                   <YAxis domain={[0, 4]} tick={{ fontSize: 11, fill: '#6B7280' }} axisLine={false} tickLine={false} />
                   <Tooltip content={<CustomTooltip />} />
+                  <ReferenceLine y={3.7} stroke="#2BB673" strokeDasharray="4 3" strokeWidth={1} label={{ value: '1st', position: 'right', fontSize: 9, fill: '#2BB673' }} />
+                  <ReferenceLine y={3.3} stroke="#1F5F73" strokeDasharray="4 3" strokeWidth={1} label={{ value: '2U', position: 'right', fontSize: 9, fill: '#1F5F73' }} />
+                  <ReferenceLine y={2.0} stroke="#F2994A" strokeDasharray="4 3" strokeWidth={1} label={{ value: 'P', position: 'right', fontSize: 9, fill: '#F2994A' }} />
+                  <defs>
+                    <linearGradient id="gpaGrad2" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#1E3A5F" />
+                      <stop offset="100%" stopColor="#1F5F73" />
+                    </linearGradient>
+                    <linearGradient id="cgpaGrad2" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#1F5F73" />
+                      <stop offset="100%" stopColor="#2BB673" />
+                    </linearGradient>
+                  </defs>
+                  <Line type="monotone" dataKey="GPA" stroke="url(#gpaGrad2)" strokeWidth={2.5} strokeDasharray="5 3"
+                    dot={{ r: 4, fill: '#1E3A5F', strokeWidth: 2, stroke: '#fff' }}
+                    activeDot={{ r: 6, fill: '#1E3A5F', strokeWidth: 2, stroke: '#fff' }} name="Sem GPA" />
+                  <Line type="monotone" dataKey="CGPA" stroke="url(#cgpaGrad2)" strokeWidth={3}
+                    dot={{ r: 5, fill: '#2BB673', strokeWidth: 2.5, stroke: '#fff' }}
+                    activeDot={{ r: 7, fill: '#2BB673', strokeWidth: 2.5, stroke: '#fff' }} name="CGPA" />
+                </ComposedChart>
+              </ResponsiveContainer>
+              <div className="mt-3 pt-3 border-t border-gray-50 flex flex-wrap gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-0.5 rounded-full border-t-2 border-dashed border-[#1E3A5F]" />
+                  <span className="text-[11px] text-[#6B7280] font-medium">Semester GPA</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-0.5 rounded-full bg-[#2BB673]" />
+                  <span className="text-[11px] text-[#6B7280] font-medium">Cumulative CGPA</span>
+                </div>
+              </div>
+            </ChartCard>
+          </div>
 
-                  {/* Classification threshold lines */}
-                  {[
-                    { y: 3.7, label: 'First', color: '#2BB673' },
-                    { y: 3.3, label: '2U', color: '#1F5F73' },
-                    { y: 3.0, label: '2L', color: '#1E3A5F' },
-                    { y: 2.0, label: 'Pass', color: '#F2994A' },
-                  ].map((ref) => (
-                    <g key={ref.y}>
-                      {/* recharts doesn't support svg directly, using ReferenceLine is not imported, so we skip */}
-                    </g>
-                  ))}
-
+          {/* ── CGPA Line (solo) ── */}
+          <div style={fadeIn(140)}>
+            <ChartCard title="CGPA Progress" subtitle="Cumulative GPA trend with classification thresholds" accent="linear-gradient(90deg, #1F5F73, #2BB673)">
+              <ResponsiveContainer width="100%" height={260}>
+                <LineChart data={cgpaProgressData} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#F7F9FB" vertical={false} />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#6B7280', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                  <YAxis domain={[0, 4]} tick={{ fontSize: 11, fill: '#6B7280' }} axisLine={false} tickLine={false} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <ReferenceLine y={3.7} stroke="#2BB673" strokeDasharray="5 3" strokeWidth={1.5} label={{ value: '1st Class ≥3.7', position: 'insideTopLeft', fontSize: 10, fill: '#2BB673' }} />
+                  <ReferenceLine y={3.3} stroke="#1F5F73" strokeDasharray="5 3" strokeWidth={1.5} label={{ value: '2nd Upper ≥3.3', position: 'insideTopLeft', fontSize: 10, fill: '#1F5F73' }} />
+                  <ReferenceLine y={3.0} stroke="#1E3A5F" strokeDasharray="5 3" strokeWidth={1.5} label={{ value: '2nd Lower ≥3.0', position: 'insideTopLeft', fontSize: 10, fill: '#1E3A5F' }} />
+                  <ReferenceLine y={2.0} stroke="#F2994A" strokeDasharray="5 3" strokeWidth={1.5} label={{ value: 'Gen Pass ≥2.0', position: 'insideTopLeft', fontSize: 10, fill: '#F2994A' }} />
                   <defs>
                     <linearGradient id="cgpaGrad" x1="0" y1="0" x2="1" y2="0">
                       <stop offset="0%" stopColor="#1E3A5F" />
@@ -850,27 +1109,12 @@ const Analyzer = ({ selectedGrades }) => {
                     activeDot={{ r: 7, fill: '#2BB673', strokeWidth: 2.5, stroke: '#fff' }} />
                 </LineChart>
               </ResponsiveContainer>
-
-              {/* Classification thresholds legend */}
-              <div className="mt-3 pt-3 border-t border-gray-50 flex flex-wrap gap-3">
-                {[
-                  { label: 'First Class', gpa: 3.7, color: '#2BB673' },
-                  { label: '2nd Upper', gpa: 3.3, color: '#1F5F73' },
-                  { label: '2nd Lower', gpa: 3.0, color: '#1E3A5F' },
-                  { label: 'General Pass', gpa: 2.0, color: '#F2994A' },
-                ].map((c) => (
-                  <div key={c.label} className="flex items-center gap-1.5">
-                    <div className="w-4 h-0.5 rounded-full" style={{ backgroundColor: c.color }} />
-                    <span className="text-[10px] text-[#9CA3AF] font-medium">{c.label} ≥{c.gpa}</span>
-                  </div>
-                ))}
-              </div>
             </ChartCard>
           </div>
 
           {/* ── Credits by Tier ── */}
           {creditsByTier.length > 0 && (
-            <div style={fadeIn(160)}>
+            <div style={fadeIn(170)}>
               <ChartCard title="Credits by Grade Tier" subtitle="How credits distribute across grade ranges per semester" accent="linear-gradient(90deg, #2BB673, #F2994A)">
                 <ResponsiveContainer width="100%" height={260}>
                   <AreaChart data={creditsByTier} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
@@ -913,8 +1157,8 @@ const Analyzer = ({ selectedGrades }) => {
             </div>
           )}
 
-          {/* ── Semester GPA Table ── */}
-          <div style={fadeIn(240)}>
+          {/* ── Semester Summary Table ── */}
+          <div style={fadeIn(230)}>
             <ChartCard title="Semester Summary Table" subtitle="All semester GPA data at a glance" accent="linear-gradient(90deg, #1E3A5F, #1F5F73)">
               <div className="space-y-2">
                 {semesterDeltas.map((sem, i) => (
@@ -953,8 +1197,34 @@ const Analyzer = ({ selectedGrades }) => {
       {activeTab === 'modules' && (
         <div className="space-y-4">
 
+          {/* ── Credit Efficiency banner ── */}
+          <div style={fadeIn(60)}
+            className="rounded-2xl p-4 sm:p-5 border overflow-hidden relative shadow-sm"
+            style={{ background: 'linear-gradient(135deg, #1E3A5F08, #2BB67308)', borderColor: '#2BB67325' }}
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-[#2BB673]/12 flex items-center justify-center text-2xl shrink-0">🎓</div>
+              <div className="flex-1">
+                <p className="text-[10px] font-black text-[#9CA3AF] uppercase tracking-widest mb-0.5">A-Range Module Rate</p>
+                <p className="text-xl font-black text-[#1C2A39]">{creditEfficiency}% <span className="text-sm font-semibold text-[#6B7280]">of graded modules</span></p>
+                <div className="mt-2 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                  <div className="h-full rounded-full transition-all duration-700"
+                    style={{ width: `${creditEfficiency}%`, background: 'linear-gradient(90deg, #1E3A5F, #2BB673)' }} />
+                </div>
+              </div>
+              <div className="shrink-0 text-right">
+                <p className="text-2xl font-black" style={{ color: creditEfficiency >= 50 ? '#2BB673' : creditEfficiency >= 30 ? '#F2994A' : '#ef4444' }}>
+                  {creditEfficiency >= 60 ? '🔥' : creditEfficiency >= 40 ? '💪' : '📖'}
+                </p>
+                <p className="text-[10px] text-[#9CA3AF] font-medium mt-0.5">
+                  {creditEfficiency >= 60 ? 'Outstanding' : creditEfficiency >= 40 ? 'Good' : 'Keep going'}
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* ── Top & Bottom Modules ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4" style={fadeIn(80)}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4" style={fadeIn(100)}>
             {topModules.length > 0 && (
               <ChartCard title="🏅 Top Performing" subtitle="Your highest-graded GPA modules" accent="linear-gradient(90deg, #2BB673, #1F5F73)">
                 <div className="space-y-2">
@@ -989,8 +1259,29 @@ const Analyzer = ({ selectedGrades }) => {
             )}
           </div>
 
+          {/* ── Module GPA Horizontal Bar Chart ── */}
+          {topModules.length > 0 && (
+            <div style={fadeIn(130)}>
+              <ChartCard title="Top Module GPA Points" subtitle="Weighted GP contribution of your best modules" accent="linear-gradient(90deg, #2BB673, #1E3A5F)">
+                <ResponsiveContainer width="100%" height={Math.max(topModules.length * 44, 180)}>
+                  <BarChart
+                    layout="vertical"
+                    data={topModules.map((m) => ({ name: m.code, GP: m.gp, credits: m.credits }))}
+                    margin={{ top: 4, right: 20, left: 8, bottom: 0 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#F7F9FB" horizontal={false} />
+                    <XAxis type="number" domain={[0, 4]} tick={{ fontSize: 11, fill: '#6B7280' }} axisLine={false} tickLine={false} />
+                    <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#6B7280', fontWeight: 700 }} axisLine={false} tickLine={false} width={52} />
+                    <Tooltip content={<CustomTooltip />} cursor={{ fill: '#F7F9FB', radius: 6 }} />
+                    <Bar dataKey="GP" radius={[0, 6, 6, 0]} maxBarSize={22} fill="#2BB673" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartCard>
+            </div>
+          )}
+
           {/* ── All Graded Modules Full List ── */}
-          <div style={fadeIn(120)}>
+          <div style={fadeIn(160)}>
             <ChartCard title="All Graded Modules" subtitle={`${modulesCompleted} modules entered`} accent="linear-gradient(90deg, #1E3A5F, #1F5F73)">
               <div className="space-y-1.5">
                 {syllabusData
@@ -1030,9 +1321,9 @@ const Analyzer = ({ selectedGrades }) => {
 
           {/* ── Upgrade Path ── */}
           {neededForUpgrade && (
-            <div
+            <div style={fadeIn(60)}
               className="rounded-2xl p-5 sm:p-6 overflow-hidden relative shadow-sm border border-[#1F5F73]/15"
-              style={{ ...fadeIn(60), background: 'linear-gradient(135deg, #1E3A5F08, #2BB67308)' }}
+              style={{ background: 'linear-gradient(135deg, #1E3A5F08, #2BB67308)' }}
             >
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl bg-[#1F5F73]/12 flex items-center justify-center text-xl shrink-0">🎯</div>
@@ -1067,17 +1358,19 @@ const Analyzer = ({ selectedGrades }) => {
                 {insights.map((insight, i) => (
                   <div
                     key={i}
-                    className={`rounded-2xl border overflow-hidden transition-all duration-200 ${insight.type === 'positive' ? 'border-[#2BB673]/15 bg-[#2BB673]/5' :
-                        insight.type === 'warning' ? 'border-[#F2994A]/20 bg-[#F2994A]/5' :
-                          'border-gray-100 bg-[#F7F9FB]'
-                      }`}
+                    className={`rounded-2xl border overflow-hidden transition-all duration-200 ${
+                      insight.type === 'positive' ? 'border-[#2BB673]/15 bg-[#2BB673]/5' :
+                      insight.type === 'warning' ? 'border-[#F2994A]/20 bg-[#F2994A]/5' :
+                      'border-gray-100 bg-[#F7F9FB]'
+                    }`}
                   >
                     <div className="flex items-start gap-3 p-4">
                       <span className="text-xl shrink-0 mt-0.5">{insight.icon}</span>
                       <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-semibold leading-snug ${insight.type === 'positive' ? 'text-[#1C2A39]' :
-                            insight.type === 'warning' ? 'text-[#1C2A39]' : 'text-[#6B7280]'
-                          }`}>{insight.text}</p>
+                        <p className={`text-sm font-semibold leading-snug ${
+                          insight.type === 'positive' ? 'text-[#1C2A39]' :
+                          insight.type === 'warning' ? 'text-[#1C2A39]' : 'text-[#6B7280]'
+                        }`}>{insight.text}</p>
                         {insight.tip && (
                           <p className="text-xs text-[#9CA3AF] mt-1.5 leading-relaxed">{insight.tip}</p>
                         )}
@@ -1089,36 +1382,49 @@ const Analyzer = ({ selectedGrades }) => {
             </div>
           )}
 
-          {/* ── Classification Scale ── */}
+          {/* ── Classification Scale (visual bar chart) ── */}
           <div style={fadeIn(160)}>
             <SectionHeader title="Classification Scale" subtitle="Where your CGPA sits" />
-            <div className="space-y-2">
-              {Object.entries(classificationInfo).reverse().map(([label, info]) => {
-                const isCurrent = label === classification;
-                return (
-                  <div
-                    key={label}
-                    className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all duration-200 ${isCurrent
-                        ? 'border-current shadow-sm'
-                        : 'border-gray-100 bg-white opacity-60'
-                      }`}
-                    style={isCurrent ? { borderColor: `${info.color}30`, background: `${info.color}08` } : {}}
+            <ChartCard title="" subtitle="" accent="">
+              <div className="pt-0">
+                <ResponsiveContainer width="100%" height={180}>
+                  <BarChart
+                    layout="vertical"
+                    data={Object.entries(classificationInfo).reverse().map(([label, info]) => ({
+                      name: label,
+                      value: info.nextTarget
+                        ? info.nextTarget - info.minGPA
+                        : 4 - info.minGPA,
+                      minGPA: info.minGPA,
+                      color: info.color,
+                      isCurrent: label === classification,
+                    }))}
+                    margin={{ top: 4, right: 12, left: 4, bottom: 4 }}
                   >
-                    <div className="w-2 h-8 rounded-full shrink-0" style={{ backgroundColor: info.color, opacity: isCurrent ? 1 : 0.4 }} />
-                    <div className="flex-1">
-                      <p className="text-sm font-bold text-[#1C2A39]">{label}</p>
-                      <p className="text-[11px] text-[#9CA3AF]">≥ {info.minGPA.toFixed(1)} GPA</p>
-                    </div>
-                    {isCurrent && (
-                      <span className="text-[11px] font-black px-2.5 py-1 rounded-full border"
-                        style={{ color: info.color, background: `${info.color}15`, borderColor: `${info.color}25` }}>
-                        You are here
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+                    <XAxis type="number" domain={[0, 4]} tick={{ fontSize: 10, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
+                    <YAxis type="category" dataKey="name" tick={{ fontSize: 10, fill: '#6B7280', fontWeight: 600 }} axisLine={false} tickLine={false} width={110} />
+                    <Tooltip content={({ active, payload }) => {
+                      if (!active || !payload?.length) return null;
+                      const d = payload[0].payload;
+                      return (
+                        <div className="bg-white/98 rounded-xl px-3 py-2 shadow-lg border border-gray-100 text-xs">
+                          <p className="font-bold text-[#1C2A39]">{d.name}</p>
+                          <p className="text-[#6B7280]">≥ {d.minGPA.toFixed(1)} GPA</p>
+                          {d.isCurrent && <p className="font-bold mt-1" style={{ color: d.color }}>You are here</p>}
+                        </div>
+                      );
+                    }} />
+                    <Bar dataKey="value" radius={[0, 6, 6, 0]} maxBarSize={22}>
+                      {Object.entries(classificationInfo).reverse().map(([label, info], i) => (
+                        <Cell key={i} fill={info.color} opacity={label === classification ? 1 : 0.25} />
+                      ))}
+                    </Bar>
+                    <ReferenceLine x={overallCGPA} stroke="#1C2A39" strokeWidth={2} strokeDasharray="4 2"
+                      label={{ value: `You: ${overallCGPA.toFixed(2)}`, position: 'top', fontSize: 10, fill: '#1C2A39', fontWeight: 700 }} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </ChartCard>
           </div>
 
           {/* ── Consistency Score ── */}
