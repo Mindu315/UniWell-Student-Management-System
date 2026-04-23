@@ -227,7 +227,7 @@ const GpaCalculator = ({ selectedGrades, setSelectedGrades }) => {
   };
 
   const classification = cgpaFloat > 0 ? getClassification(cgpaFloat) : null;
-
+// PDF impoert, CGPA summary card with progress bar, and semester cards with accordion details and GPA calculations are implemented in the code below.
   return (
     <div className="space-y-5 min-w-0 overflow-x-hidden">
       {/* Hidden PDF input */}
