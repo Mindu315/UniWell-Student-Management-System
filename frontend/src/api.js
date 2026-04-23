@@ -117,7 +117,11 @@ export const careerAPI = {
 
   getSkillsByIndustry: (industryId) => api.get(`/careers/industries/${industryId}/skills`),
 
+  getCareersByIndustry: (industryId) => api.get(`/careers/industries/${industryId}/careers`),
+
   getQuizByIndustry: (industryId) => api.get(`/careers/industries/${industryId}/quiz`),
+
+  getAllCareers: () => api.get('/careers/all-careers'),
 
   recommendCareer: (data) => api.post('/careers/recommend', data)
 };

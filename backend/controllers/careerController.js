@@ -72,6 +72,49 @@ exports.getSkillsByIndustry = async (req, res) => {
     }
 };
 
+exports.getCareersByIndustry = async (req, res) => {
+    try {
+        const { industryId } = req.params;
+        const careers = await Career.find({ $or: buildIndustryFilters(industryId) })
+            .sort({ careerName: 1 });
+
+        res.status(200).json({
+            success: true,
+            data: careers
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+exports.getAllCareers = async (req, res) => {
+    try {
+        // Get all careers and group them by industry
+        const careers = await Career.find({}).sort({ industryId: 1, careerName: 1 });
+        
+        // Group careers by industry
+        const careersByIndustry = {};
+        careers.forEach(career => {
+            const industryKey = career.industryId || 'Unknown';
+            if (!careersByIndustry[industryKey]) {
+                careersByIndustry[industryKey] = [];
+            }
+            careersByIndustry[industryKey].push({
+                careerName: career.careerName,
+                title: career.title,
+                description: career.description
+            });
+        });
+
+        res.status(200).json({
+            success: true,
+            data: careersByIndustry
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 exports.getQuizByIndustry = async (req, res) => {
     try {
         const { industryId } = req.params;
