@@ -213,7 +213,7 @@ const GpaCalculator = ({ selectedGrades, setSelectedGrades }) => {
   const toggleAccordion = (key) => {
     setExpandedSemesters((prev) => ({ ...prev, [key]: !prev[key] }));
   };
-
+// error 
   const cgpaFloat = parseFloat(calculateCGPA);
   const cgpaPercent = Math.min((cgpaFloat / 4) * 100, 100);
 
