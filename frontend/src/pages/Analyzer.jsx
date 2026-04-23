@@ -1426,7 +1426,7 @@ const Analyzer = ({ selectedGrades }) => {
               </div>
             </ChartCard>
           </div>
-
+                      // Donut chart with consistency score in center, and text analysis + best/worst semesters on the right
           {/* ── Consistency Score ── */}
           <div style={fadeIn(200)}>
             <ChartCard title="Consistency Score" subtitle="How stable your GPA is across semesters" accent="linear-gradient(90deg, #1E3A5F, #2BB673)">
