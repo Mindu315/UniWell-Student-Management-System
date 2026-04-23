@@ -158,11 +158,11 @@ const SectionHeader = ({ title, subtitle }) => (
 
 // ── Classification Badge ──
 const classificationInfo = {
-  'First Class Honours':  { color: '#2BB673', bg: 'bg-[#2BB673]/10', border: 'border-[#2BB673]/25', minGPA: 3.7, nextTarget: null },
-  'Second Class Upper':   { color: '#1F5F73', bg: 'bg-[#1F5F73]/10', border: 'border-[#1F5F73]/25', minGPA: 3.3, nextTarget: 3.7 },
-  'Second Class Lower':   { color: '#1E3A5F', bg: 'bg-[#1E3A5F]/10', border: 'border-[#1E3A5F]/25', minGPA: 3.0, nextTarget: 3.3 },
-  'General Pass':         { color: '#F2994A', bg: 'bg-[#F2994A]/10', border: 'border-[#F2994A]/25', minGPA: 2.0, nextTarget: 3.0 },
-  'Below Standard':       { color: '#ef4444', bg: 'bg-red-50',        border: 'border-red-200',         minGPA: 0,   nextTarget: 2.0 },
+  'First Class Honours': { color: '#2BB673', bg: 'bg-[#2BB673]/10', border: 'border-[#2BB673]/25', minGPA: 3.7, nextTarget: null },
+  'Second Class Upper': { color: '#1F5F73', bg: 'bg-[#1F5F73]/10', border: 'border-[#1F5F73]/25', minGPA: 3.3, nextTarget: 3.7 },
+  'Second Class Lower': { color: '#1E3A5F', bg: 'bg-[#1E3A5F]/10', border: 'border-[#1E3A5F]/25', minGPA: 3.0, nextTarget: 3.3 },
+  'General Pass': { color: '#F2994A', bg: 'bg-[#F2994A]/10', border: 'border-[#F2994A]/25', minGPA: 2.0, nextTarget: 3.0 },
+  'Below Standard': { color: '#ef4444', bg: 'bg-red-50', border: 'border-red-200', minGPA: 0, nextTarget: 2.0 },
 };
 
 // ── Main Component ──
@@ -550,11 +550,10 @@ const Analyzer = ({ selectedGrades }) => {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition-all duration-200 ${
-              activeTab === tab.id
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition-all duration-200 ${activeTab === tab.id
                 ? 'bg-white text-[#1C2A39] shadow-sm'
                 : 'text-[#9CA3AF] hover:text-[#6B7280]'
-            }`}
+              }`}
           >
             <span>{tab.icon}</span>
             <span className="hidden sm:inline">{tab.label}</span>
@@ -801,10 +800,9 @@ const Analyzer = ({ selectedGrades }) => {
               {semesterDeltas.length > 1 && (
                 <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-50">
                   {semesterDeltas.map((sem, i) => i > 0 && (
-                    <span key={sem.name} className={`inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full ${
-                      sem.delta > 0 ? 'bg-[#2BB673]/10 text-[#2BB673]' :
-                      sem.delta < 0 ? 'bg-red-50 text-red-600' : 'bg-[#F7F9FB] text-[#6B7280]'
-                    }`}>
+                    <span key={sem.name} className={`inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full ${sem.delta > 0 ? 'bg-[#2BB673]/10 text-[#2BB673]' :
+                        sem.delta < 0 ? 'bg-red-50 text-red-600' : 'bg-[#F7F9FB] text-[#6B7280]'
+                      }`}>
                       {sem.name}
                       {sem.delta > 0
                         ? <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" /></svg>
@@ -1032,9 +1030,9 @@ const Analyzer = ({ selectedGrades }) => {
 
           {/* ── Upgrade Path ── */}
           {neededForUpgrade && (
-            <div style={fadeIn(60)}
+            <div
               className="rounded-2xl p-5 sm:p-6 overflow-hidden relative shadow-sm border border-[#1F5F73]/15"
-              style={{ background: 'linear-gradient(135deg, #1E3A5F08, #2BB67308)' }}
+              style={{ ...fadeIn(60), background: 'linear-gradient(135deg, #1E3A5F08, #2BB67308)' }}
             >
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl bg-[#1F5F73]/12 flex items-center justify-center text-xl shrink-0">🎯</div>
@@ -1069,19 +1067,17 @@ const Analyzer = ({ selectedGrades }) => {
                 {insights.map((insight, i) => (
                   <div
                     key={i}
-                    className={`rounded-2xl border overflow-hidden transition-all duration-200 ${
-                      insight.type === 'positive' ? 'border-[#2BB673]/15 bg-[#2BB673]/5' :
-                      insight.type === 'warning' ? 'border-[#F2994A]/20 bg-[#F2994A]/5' :
-                      'border-gray-100 bg-[#F7F9FB]'
-                    }`}
+                    className={`rounded-2xl border overflow-hidden transition-all duration-200 ${insight.type === 'positive' ? 'border-[#2BB673]/15 bg-[#2BB673]/5' :
+                        insight.type === 'warning' ? 'border-[#F2994A]/20 bg-[#F2994A]/5' :
+                          'border-gray-100 bg-[#F7F9FB]'
+                      }`}
                   >
                     <div className="flex items-start gap-3 p-4">
                       <span className="text-xl shrink-0 mt-0.5">{insight.icon}</span>
                       <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-semibold leading-snug ${
-                          insight.type === 'positive' ? 'text-[#1C2A39]' :
-                          insight.type === 'warning' ? 'text-[#1C2A39]' : 'text-[#6B7280]'
-                        }`}>{insight.text}</p>
+                        <p className={`text-sm font-semibold leading-snug ${insight.type === 'positive' ? 'text-[#1C2A39]' :
+                            insight.type === 'warning' ? 'text-[#1C2A39]' : 'text-[#6B7280]'
+                          }`}>{insight.text}</p>
                         {insight.tip && (
                           <p className="text-xs text-[#9CA3AF] mt-1.5 leading-relaxed">{insight.tip}</p>
                         )}
@@ -1102,11 +1098,10 @@ const Analyzer = ({ selectedGrades }) => {
                 return (
                   <div
                     key={label}
-                    className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all duration-200 ${
-                      isCurrent
+                    className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all duration-200 ${isCurrent
                         ? 'border-current shadow-sm'
                         : 'border-gray-100 bg-white opacity-60'
-                    }`}
+                      }`}
                     style={isCurrent ? { borderColor: `${info.color}30`, background: `${info.color}08` } : {}}
                   >
                     <div className="w-2 h-8 rounded-full shrink-0" style={{ backgroundColor: info.color, opacity: isCurrent ? 1 : 0.4 }} />
