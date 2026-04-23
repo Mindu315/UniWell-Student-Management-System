@@ -47,7 +47,7 @@ const CalculatorDashboard = () => {
         return null;
     }
   };
-
+// Check if specialization and syllabusType are present to determine if we can show the main content or need to prompt for selection
   const hasAcademicContext = Boolean(specialization && syllabusType);
 
   return (
