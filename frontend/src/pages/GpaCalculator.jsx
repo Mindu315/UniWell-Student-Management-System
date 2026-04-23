@@ -20,7 +20,7 @@ import iseOldSyllabus from '../it_data/ise_old_syllabus.json';
 import gradingStyle from '../it_data/grading_style.json';
 import * as pdfjsLib from 'pdfjs-dist';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@5.5.207/build/pdf.worker.min.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.mjs`;
 
 const syllabusMap = {
   it: { new: itNewSyllabus, old: itOldSyllabus },
