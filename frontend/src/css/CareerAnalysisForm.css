@@ -1,0 +1,52 @@
+/* src/components/CareerAnalysisForm.css */
+
+.input-section label {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1c3d6e;
+  margin-bottom: 20px;
+}
+
+.options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.form-step {
+  width: 100%;
+}
+
+.form-label {
+  color: #1c3d6e;
+}
+
+.animate-fade-in {
+  animation: careerFadeIn 0.25s ease;
+}
+
+.career-inline-message {
+  width: 100%;
+  margin-top: 0.35rem;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.career-inline-message-error {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+@keyframes careerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

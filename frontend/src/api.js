@@ -108,6 +108,21 @@ export const wellbeingAPI = {
   getMyCheckins: (limit = 30) => api.get(`/wellbeing/check-ins?limit=${limit}`)
 };
 
+// Career guidance API calls
+export const careerAPI = {
+  getIndustries: () => api.get('/careers/industries'),
+
+  getSkillsByIndustry: (industryId) => api.get(`/careers/industries/${industryId}/skills`),
+
+  getCareersByIndustry: (industryId) => api.get(`/careers/industries/${industryId}/careers`),
+
+  getQuizByIndustry: (industryId) => api.get(`/careers/industries/${industryId}/quiz`),
+
+  getAllCareers: () => api.get('/careers/all-careers'),
+
+  recommendCareer: (data) => api.post('/careers/recommend', data)
+};
+
 // Helper functions for token management
 export const setToken = (token) => {
   localStorage.setItem('token', token);

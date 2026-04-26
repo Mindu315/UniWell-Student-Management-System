@@ -11,6 +11,12 @@ import Flashcards from './pages/Flashcards';
 import AIQuizzes from './pages/AIQuizzes';
 import StressManagementPage from './pages/StressManagementPage';
 import AcademicPerformancePage from './pages/CalculatorDashboard';
+import CareerGuidance from './pages/CareerGuidance';
+import CareerProcess from './pages/CareerProcess';
+import IndustryQuiz from './pages/IndustryQuiz';
+import Results from './pages/Results';
+import SalaryTrends from './pages/SalaryTrends';
+import CourseSuggestions from './pages/CourseSuggestions';
 import './styles.css';
 
 function App() {
@@ -61,6 +67,54 @@ function App() {
             element={
               <ProtectedRoute>
                 <AcademicPerformancePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/career-guidance"
+            element={
+              <ProtectedRoute>
+                <CareerGuidance />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/career-process"
+            element={
+              <ProtectedRoute>
+                <CareerProcess />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/industry-quiz"
+            element={
+              <ProtectedRoute>
+                <IndustryQuiz />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/results"
+            element={
+              <ProtectedRoute>
+                <Results />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/salary-trends"
+            element={
+              <ProtectedRoute>
+                <SalaryTrends />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/course-suggestions"
+            element={
+              <ProtectedRoute>
+                <CourseSuggestions />
               </ProtectedRoute>
             }
           />

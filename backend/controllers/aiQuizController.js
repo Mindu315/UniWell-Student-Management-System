@@ -2,12 +2,12 @@
  * AI Quiz Controller
  * - Upload PDF
  * - Extract text
- * - Generate MCQs via AI (OpenAI)
+ * - Generate MCQs via AI (Groq)
  * - Save quiz per authenticated user
  */
 
-const pdfParse = require('pdf-parse');
-const { OpenAI } = require('openai');
+const pdfParseLib = require('pdf-parse');
+const Groq = require('groq-sdk');
 
 const Quiz = require('../models/Quiz');
 const QuizAttempt = require('../models/QuizAttempt');
@@ -29,12 +29,20 @@ const safeExtractJson = (raw) => {
   try {
     return JSON.parse(raw);
   } catch {
-    // Try to extract the first JSON object from a longer response.
+    const fenceMatch = raw.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (fenceMatch) {
+      try {
+        return JSON.parse(fenceMatch[1].trim());
+      } catch {}
+    }
     const firstBrace = raw.indexOf('{');
     const lastBrace = raw.lastIndexOf('}');
     if (firstBrace === -1 || lastBrace === -1 || lastBrace <= firstBrace) return null;
-    const candidate = raw.slice(firstBrace, lastBrace + 1);
-    return JSON.parse(candidate);
+    try {
+      return JSON.parse(raw.slice(firstBrace, lastBrace + 1));
+    } catch {
+      return null;
+    }
   }
 };
 
@@ -49,20 +57,25 @@ const validateQuizJson = (quizJson) => {
     if (!q || typeof q !== 'object') continue;
     const question = typeof q.question === 'string' ? q.question.trim() : '';
     const options = Array.isArray(q.options) ? q.options.map((x) => String(x)) : [];
-    const correctOptionIndex = typeof q.correctOptionIndex === 'number' ? q.correctOptionIndex : q.correctIndex;
-    const explanation = typeof q.explanation === 'string' ? q.explanation.trim() : undefined;
+    const correctOptionIndex =
+      typeof q.correctOptionIndex === 'number' ? q.correctOptionIndex : q.correctIndex;
+    const explanation =
+      typeof q.explanation === 'string' ? q.explanation.trim() : undefined;
 
     if (!question) continue;
     if (!options || options.length !== 4) continue;
 
-    const idx = typeof correctOptionIndex === 'number' ? correctOptionIndex : parseInt(correctOptionIndex, 10);
+    const idx =
+      typeof correctOptionIndex === 'number'
+        ? correctOptionIndex
+        : parseInt(correctOptionIndex, 10);
     if (Number.isNaN(idx) || idx < 0 || idx > 3) continue;
 
     normalizedQuestions.push({
       question,
       options,
       correctOptionIndex: idx,
-      explanation: explanation || undefined
+      explanation: explanation || undefined,
     });
   }
 
@@ -70,32 +83,55 @@ const validateQuizJson = (quizJson) => {
 
   return {
     quizTitle: typeof quizTitle === 'string' ? quizTitle.trim() : 'Generated Quiz',
-    questions: normalizedQuestions
+    questions: normalizedQuestions,
   };
 };
 
+const parsePdfBuffer = async (buffer) => {
+  if (typeof pdfParseLib === 'function') {
+    return pdfParseLib(buffer);
+  }
+
+  if (typeof pdfParseLib?.default === 'function') {
+    return pdfParseLib.default(buffer);
+  }
+
+  if (typeof pdfParseLib?.PDFParse === 'function') {
+    const parser = new pdfParseLib.PDFParse({ data: buffer });
+    try {
+      return await parser.getText();
+    } finally {
+      await parser.destroy().catch(() => {});
+    }
+  }
+
+  throw new Error('Unsupported pdf-parse module shape');
+};
+
 const extractTextFromPdfBuffer = async (buffer) => {
-  const parsed = await pdfParse(buffer);
+  const parsed = await parsePdfBuffer(buffer);
   return parsed?.text || '';
 };
 
-const generateMcqsWithOpenAI = async ({
+/**
+ * Generate MCQs using the Groq API.
+ */
+const generateMcqsWithGroq = async ({
   extractedText,
   questionCount,
   subject,
   difficulty,
-  openaiApiKey,
-  openaiModel
+  groqApiKey,
+  groqModel,
 }) => {
-  const client = new OpenAI({ apiKey: openaiApiKey });
+  const client = new Groq({ apiKey: groqApiKey });
 
-  // Keep prompt deterministic-ish and force JSON output.
   const prompt = `You are an expert exam setter.
 Generate ${questionCount} multiple-choice questions (MCQs) from the provided text.
 
 Requirements:
 - Return ONLY valid JSON (no markdown, no explanations outside JSON).
-- The JSON must match this structure:
+- The JSON must match this structure exactly:
 {
   "quizTitle": string,
   "questions": [
@@ -108,7 +144,7 @@ Requirements:
   ]
 }
 - Each correct option must be consistent with the text.
-- Difficulty: ${difficulty}. Subject/topic hint: ${subject}.
+- Difficulty: ${difficulty}. Subject/topic hint: ${subject || 'general'}.
 
 Text:
 """
@@ -116,19 +152,17 @@ ${extractedText}
 """`;
 
   const completion = await client.chat.completions.create({
-    model: openaiModel,
+    model: groqModel,
     temperature: 0.2,
     messages: [
-      { role: 'system', content: 'Return JSON only.' },
-      { role: 'user', content: prompt }
+      { role: 'system', content: 'Return JSON only. No markdown, no extra text.' },
+      { role: 'user', content: prompt },
     ],
-    // Some models support structured output; if unsupported, JSON-only prompt is still used.
-    response_format: { type: 'json_object' }
+    response_format: { type: 'json_object' },
   });
 
   const raw = completion.choices?.[0]?.message?.content || '';
-  const parsed = safeExtractJson(raw);
-  return parsed;
+  return safeExtractJson(raw);
 };
 
 /**
@@ -140,13 +174,15 @@ const generateQuizFromPdf = async (req, res) => {
     if (!req.file || !req.file.buffer) {
       return res.status(400).json({
         success: false,
-        message: 'Please upload a PDF file (field name: pdf)'
+        message: 'Please upload a PDF file (field name: pdf)',
       });
     }
 
     const questionCount = clampInt(req.body.questionCount, 1, 25, 5);
-    const subject = typeof req.body.subject === 'string' ? req.body.subject.trim() : '';
-    const difficulty = typeof req.body.difficulty === 'string' ? req.body.difficulty.trim() : 'medium';
+    const subject =
+      typeof req.body.subject === 'string' ? req.body.subject.trim() : '';
+    const difficulty =
+      typeof req.body.difficulty === 'string' ? req.body.difficulty.trim() : 'medium';
 
     const pdfText = await extractTextFromPdfBuffer(req.file.buffer);
     const extractedText = truncateText(pdfText, 12000);
@@ -154,75 +190,34 @@ const generateQuizFromPdf = async (req, res) => {
     if (!extractedText || extractedText.trim().length < 50) {
       return res.status(400).json({
         success: false,
-        message: 'Could not extract enough text from the PDF. Please try a different PDF.'
+        message: 'Could not extract enough text from the PDF. Please try a different PDF.',
       });
     }
 
-    const openaiApiKey = process.env.OPENAI_API_KEY;
-    const openaiModel = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+    const groqApiKey = (process.env.GROQ_API_KEY || '').trim();
+    const groqModel = (process.env.GROQ_MODEL || 'llama-3.3-70b-versatile').trim();
 
-    if (!openaiApiKey) {
+    if (!groqApiKey) {
       return res.status(500).json({
         success: false,
-        message: 'AI generation is not configured. Please set OPENAI_API_KEY in your backend environment.'
+        message: 'AI generation is not configured. Please set GROQ_API_KEY in your backend environment.',
       });
     }
 
-    let quizJson;
-    try {
-      quizJson = await generateMcqsWithOpenAI({
-        extractedText,
-        questionCount,
-        subject,
-        difficulty,
-        openaiApiKey,
-        openaiModel
-      });
-    } catch (aiError) {
-      // If response_format is not supported for the chosen model, retry without it.
-      const client = new OpenAI({ apiKey: openaiApiKey });
-      const prompt = `You are an expert exam setter.
-Generate ${questionCount} multiple-choice questions (MCQs) from the provided text.
-
-Requirements:
-- Return ONLY valid JSON (no markdown, no explanations outside JSON).
-- The JSON must match this structure:
-{
-  "quizTitle": string,
-  "questions": [
-    {
-      "question": string,
-      "options": [string, string, string, string],
-      "correctOptionIndex": 0 | 1 | 2 | 3,
-      "explanation": string (1-2 sentences)
-    }
-  ]
-}
-- Each correct option must be consistent with the text.
-- Difficulty: ${difficulty}. Subject/topic hint: ${subject}.
-
-Text:
-"""
-${extractedText}
-"""`;
-
-      const completion = await client.chat.completions.create({
-        model: openaiModel,
-        temperature: 0.2,
-        messages: [
-          { role: 'system', content: 'Return JSON only.' },
-          { role: 'user', content: prompt }
-        ]
-      });
-      const raw = completion.choices?.[0]?.message?.content || '';
-      quizJson = safeExtractJson(raw);
-    }
+    const quizJson = await generateMcqsWithGroq({
+      extractedText,
+      questionCount,
+      subject,
+      difficulty,
+      groqApiKey,
+      groqModel,
+    });
 
     const validated = validateQuizJson(quizJson);
     if (!validated) {
       return res.status(500).json({
         success: false,
-        message: 'AI did not return valid quiz JSON. Please try again with a different PDF.'
+        message: 'AI did not return valid quiz JSON. Please try again with a different PDF.',
       });
     }
 
@@ -236,9 +231,9 @@ ${extractedText}
       questionCount,
       questions: validated.questions,
       ai: {
-        provider: 'openai',
-        model: openaiModel
-      }
+        provider: 'groq',
+        model: groqModel,
+      },
     });
 
     res.status(201).json({
@@ -252,16 +247,25 @@ ${extractedText}
           subject: quiz.subject,
           difficulty: quiz.difficulty,
           questionCount: quiz.questionCount,
-          questions: quiz.questions
-        }
-      }
+          questions: quiz.questions,
+        },
+      },
     });
   } catch (error) {
     console.error('Generate quiz error:', error);
+
+    if (error?.status === 401) {
+      return res.status(502).json({
+        success: false,
+        message: 'Groq authentication failed. Please verify GROQ_API_KEY in backend/.env and restart the server.',
+        error: 'Invalid Groq API key',
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: 'Error generating quiz',
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -276,14 +280,14 @@ const getMyQuizzes = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Quizzes retrieved successfully',
-      data: { count: quizzes.length, quizzes }
+      data: { count: quizzes.length, quizzes },
     });
   } catch (error) {
     console.error('Get quizzes error:', error);
     res.status(500).json({
       success: false,
       message: 'Error retrieving quizzes',
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -307,16 +311,16 @@ const getQuizById = async (req, res) => {
           subject: quiz.subject,
           difficulty: quiz.difficulty,
           questionCount: quiz.questionCount,
-          questions: quiz.questions
-        }
-      }
+          questions: quiz.questions,
+        },
+      },
     });
   } catch (error) {
     console.error('Get quiz error:', error);
     res.status(500).json({
       success: false,
       message: 'Error retrieving quiz',
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -330,19 +334,18 @@ const deleteQuizById = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Quiz not found' });
     }
 
-    // Keep analytics consistent by removing stored attempts for this quiz.
     await QuizAttempt.deleteMany({ quizId: quiz._id, userId: req.user.id });
 
     res.status(200).json({
       success: true,
-      message: 'Quiz deleted successfully'
+      message: 'Quiz deleted successfully',
     });
   } catch (error) {
     console.error('Delete quiz error:', error);
     res.status(500).json({
       success: false,
       message: 'Error deleting quiz',
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -351,6 +354,5 @@ module.exports = {
   generateQuizFromPdf,
   getMyQuizzes,
   getQuizById,
-  deleteQuizById
+  deleteQuizById,
 };
-
