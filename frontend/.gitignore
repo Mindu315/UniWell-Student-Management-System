@@ -19,6 +19,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Playwright
+/playwright-report
+/test-results
+/blob-report
+
 # Lockfiles
 package-lock.json
 yarn.lock
