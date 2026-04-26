@@ -1,0 +1,362 @@
+[
+  {
+    "moduleCode": "IT1120",
+    "moduleName": "Introduction to Programming",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IE1030",
+    "moduleName": "Data Communication Networks",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1130",
+    "moduleName": "Mathematics for Computing",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1140",
+    "moduleName": "Fundamentals of Computing",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1160",
+    "moduleName": "Discrete Mathematics",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1170",
+    "moduleName": "Data Structures and Algorithms",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE1010",
+    "moduleName": "Software Engineering",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT1150",
+    "moduleName": "Technical Writing",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2120",
+    "moduleName": "Probability and Statistics",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE2010",
+    "moduleName": "Object Oriented Programming",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2130",
+    "moduleName": "Operating Systems & System Administration",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2140",
+    "moduleName": "Database Design and Development",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2011",
+    "moduleName": "Artificial Intelligence & Machine Learning",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE2011",
+    "moduleName": "Technical Evolution of Multimedia",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE2021",
+    "moduleName": "Creative Expertise Development",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT2160",
+    "moduleName": "Professional Skills",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3101",
+    "moduleName": "Advanced Computer Graphics",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3111",
+    "moduleName": "Digital Business Management and Entrepreneurship",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3121",
+    "moduleName": "UI/UX Designing and Engineering",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3131",
+    "moduleName": "Fundamentals of Cinematography and Digital Multimedia",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT3190",
+    "moduleName": "Industry Training",
+    "credits": 0,
+    "year": 3,
+    "semester": 2,
+    "isGPA": false,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3141",
+    "moduleName": "3D Modeling & Animation",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE3151",
+    "moduleName": "Machine Learning based Image Manipulations",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT3160",
+    "moduleName": "Research Methods",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT4200",
+    "moduleName": "Research Project - I",
+    "credits": 6,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4071",
+    "moduleName": "Games Technology",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4081",
+    "moduleName": "Technology-based Entertainment and Aesthetics",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4101",
+    "moduleName": "Advanced Computer Generated Imagery",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4111",
+    "moduleName": "Advanced Cinematography and Television Production",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4121",
+    "moduleName": "Mobile Application Design and Development",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "IT4200",
+    "moduleName": "Research Project - II",
+    "credits": 8,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4091",
+    "moduleName": "New Media Project Management",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4131",
+    "moduleName": "Games and Mixed Reality Applications",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4141",
+    "moduleName": "New Media Insights",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4151",
+    "moduleName": "Audio Engineering and Sonic Arts",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  },
+  {
+    "moduleCode": "SE4161",
+    "moduleName": "Advanced Digital Marketing and Advertising",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "IM"
+  }
+]

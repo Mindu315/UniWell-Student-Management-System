@@ -314,17 +314,9 @@
   align-items: center;
 }
 
-.input-icon {
-  position: absolute;
-  left: 1rem;
-  font-size: 1.1rem;
-  pointer-events: none;
-  z-index: 1;
-}
-
 .field-input {
   width: 100%;
-  padding: 0.875rem 1rem 0.875rem 3rem;
+  padding: 0.875rem 1rem;
   font-size: 1rem;
   border: 2px solid var(--border);
   border-radius: var(--radius-md);
@@ -332,6 +324,10 @@
   color: var(--primary-text);
   transition: all 0.3s ease;
   font-family: inherit;
+}
+
+.input-wrapper.has-toggle .field-input {
+  padding-right: 2.8rem;
 }
 
 .field-input::placeholder {

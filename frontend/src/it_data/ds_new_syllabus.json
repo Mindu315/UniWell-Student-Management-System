@@ -1,0 +1,342 @@
+[
+  {
+    "moduleCode": "IT1120",
+    "moduleName": "Introduction to Programming",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IE1030",
+    "moduleName": "Data Communication Networks",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT1130",
+    "moduleName": "Mathematics for Computing",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT1140",
+    "moduleName": "Fundamentals of Computing",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT1160",
+    "moduleName": "Discrete Mathematics",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT1170",
+    "moduleName": "Data Structures and Algorithms",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "SE1010",
+    "moduleName": "Software Engineering",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT1150",
+    "moduleName": "Technical Writing",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT2120",
+    "moduleName": "Probability and Statistics",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "SE2010",
+    "moduleName": "Object Oriented Programming",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT2130",
+    "moduleName": "Operating Systems & System Administration",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT2140",
+    "moduleName": "Database Design and Development",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT2011",
+    "moduleName": "Artificial Intelligence & Machine Learning",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT2150",
+    "moduleName": "IT Project",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "SE2020",
+    "moduleName": "Web and Mobile Technologies",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT2160",
+    "moduleName": "Professional Skills",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT3190",
+    "moduleName": "Industry Training",
+    "credits": 0,
+    "year": 2,
+    "semester": 2,
+    "isGPA": false,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT3120",
+    "moduleName": "Industry Economics & Management",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT3081",
+    "moduleName": "Statistical Modelling",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT3091",
+    "moduleName": "Machine Learning",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT3101",
+    "moduleName": "Data Warehousing and Business Intelligence",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT3190",
+    "moduleName": "Industry Training",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": false,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT3111",
+    "moduleName": "Deep Learning",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT3121",
+    "moduleName": "Cloud Data Analytics",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT3160",
+    "moduleName": "Research Methods",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT4200",
+    "moduleName": "Research Project - I",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT4051",
+    "moduleName": "Modern Topics in Data Science",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT4061",
+    "moduleName": "Natural Language Processing",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT4081",
+    "moduleName": "Software Engineering Concepts",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT4091",
+    "moduleName": "Optimization Methods",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT4200",
+    "moduleName": "Research Project - II",
+    "credits": 8,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT4071",
+    "moduleName": "Data Governance, Privacy and Security",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT4101",
+    "moduleName": "Database Implementation and Administration",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  },
+  {
+    "moduleCode": "IT4111",
+    "moduleName": "MLOps for Data Analytics",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "NEW",
+    "specialization": "DS"
+  }
+]

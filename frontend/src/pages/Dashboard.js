@@ -7,11 +7,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import { authAPI } from '../api';
+import { authAPI, wellbeingAPI } from '../api';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [latestCheckin, setLatestCheckin] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -21,9 +22,20 @@ const Dashboard = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await authAPI.getMe();
-      if (response.data.success) {
-        setUser(response.data.data.user);
+      const [userResult, wellbeingResult] = await Promise.allSettled([
+        authAPI.getMe(),
+        wellbeingAPI.getMyCheckins(1)
+      ]);
+
+      if (userResult.status === 'fulfilled' && userResult.value.data.success) {
+        setUser(userResult.value.data.data.user);
+      } else {
+        setError('Failed to load user data');
+      }
+
+      if (wellbeingResult.status === 'fulfilled') {
+        const latest = wellbeingResult.value.data?.data?.checkins?.[0] || null;
+        setLatestCheckin(latest);
       }
     } catch (err) {
       setError('Failed to load user data');
@@ -41,6 +53,13 @@ const Dashboard = () => {
     { title: 'UX Design', match: 72, icon: '🎨', tone: 'career-medium' },
     { title: 'Project Mgmt', match: 68, icon: '🧩', tone: 'career-base' }
   ];
+
+  const stressLabel = latestCheckin?.conditionLabel || 'No Check-In Yet';
+  const stressLevel = Number(latestCheckin?.stress || 0);
+  const stressPercent = Math.min(Math.max((stressLevel / 5) * 100, 0), 100);
+  const stressMeta = latestCheckin
+    ? `Latest Stress Level: ${latestCheckin.stress}/5`
+    : 'Start by submitting your first wellbeing check-in';
 
   if (loading) {
     return (
@@ -92,10 +111,18 @@ const Dashboard = () => {
           <article className="summary-card stress-card">
             <div className="summary-icon">🌸</div>
             <h3>Stress Level</h3>
-            <span className="summary-badge">Moderate</span>
+            <span className="summary-badge">{stressLabel}</span>
             <div className="summary-progress">
-              <span style={{ width: '64%' }} />
+              <span style={{ width: `${stressPercent}%` }} />
             </div>
+            <p className="hero-eyebrow" style={{ marginTop: '0.7rem' }}>{stressMeta}</p>
+            <button
+              className="summary-action"
+              style={{ marginTop: '0.7rem' }}
+              onClick={() => navigate('/stress-management')}
+            >
+              Open Stress Page →
+            </button>
           </article>
 
           <article className="summary-card gpa-card">
@@ -113,7 +140,13 @@ const Dashboard = () => {
           <article className="summary-card quiz-card">
             <div className="summary-icon">🤖</div>
             <h3>AI Quizzes</h3>
-            <button className="summary-action">Start Quiz →</button>
+            <button
+              className="summary-action"
+              onClick={() => navigate('/ai-quizzes')}
+              type="button"
+            >
+              Start Quiz →
+            </button>
           </article>
         </section>
 

@@ -1,0 +1,412 @@
+[
+  {
+    "moduleCode": "IT1010",
+    "moduleName": "Introduction to Programming",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT1020",
+    "moduleName": "Introduction to Computer Systems",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT1030",
+    "moduleName": "Mathematics for Computing",
+    "credits": 4,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT1040",
+    "moduleName": "Communication Skills",
+    "credits": 3,
+    "year": 1,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT1050",
+    "moduleName": "Object Oriented Concepts",
+    "credits": 2,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT1060",
+    "moduleName": "Software Process Modeling",
+    "credits": 3,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT1080",
+    "moduleName": "English for Academic Purposes",
+    "credits": 3,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT1090",
+    "moduleName": "Information Systems and Data Modeling",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT1100",
+    "moduleName": "Internet and Web Technologies",
+    "credits": 4,
+    "year": 1,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT2020",
+    "moduleName": "Software Engineering",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT2030",
+    "moduleName": "Object Oriented Programming",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT2040",
+    "moduleName": "Database Management Systems",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT2050",
+    "moduleName": "Computer Networks",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT2060",
+    "moduleName": "Operating Systems and System Administration",
+    "credits": 4,
+    "year": 2,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT2010",
+    "moduleName": "Mobile Application Development",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT2070",
+    "moduleName": "Data Structures and Algorithms",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT2080",
+    "moduleName": "IT Project",
+    "credits": 4,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT2090",
+    "moduleName": "Professional Skills",
+    "credits": 2,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT2100",
+    "moduleName": "Employability Skills Development -Seminar",
+    "credits": 1,
+    "year": 2,
+    "semester": 2,
+    "isGPA": false,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT2110",
+    "moduleName": "Probability and Statistics",
+    "credits": 3,
+    "year": 2,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE3010",
+    "moduleName": "Software Engineering Process & Quality Management",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE3020",
+    "moduleName": "Distributed Systems",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE3030",
+    "moduleName": "Software Architecture",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE3040",
+    "moduleName": "Application Frameworks",
+    "credits": 4,
+    "year": 3,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT3050",
+    "moduleName": "Employability Skills Development - Seminar",
+    "credits": 1,
+    "year": 3,
+    "semester": 1,
+    "isGPA": false,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE3050",
+    "moduleName": "User Experience Engineering",
+    "credits": 3,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE3060",
+    "moduleName": "Database Systems",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE3070",
+    "moduleName": "Case Studies in Software Engineering",
+    "credits": 4,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE3080",
+    "moduleName": "Software Project Management",
+    "credits": 3,
+    "year": 3,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT3110",
+    "moduleName": "Industry Placement",
+    "credits": 8,
+    "year": 3,
+    "semester": 2,
+    "isGPA": false,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT4070",
+    "moduleName": "Preparation for the Professional World",
+    "credits": 2,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE4010",
+    "moduleName": "Current Trends in Software Engineering",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT4060",
+    "moduleName": "Machine Learning",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE4020",
+    "moduleName": "Mobile Application Design & Development",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IE4060",
+    "moduleName": "Robotics and Intelligent Systems",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT4130",
+    "moduleName": "Image Understanding & Processing",
+    "credits": 4,
+    "year": 4,
+    "semester": 1,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "IT4010",
+    "moduleName": "Research Project",
+    "credits": 16,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE4030",
+    "moduleName": "Secure Software Development",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE4040",
+    "moduleName": "Enterprise Application Development",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE4050",
+    "moduleName": "Deep Learning",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  },
+  {
+    "moduleCode": "SE4060",
+    "moduleName": "Parallel Computing",
+    "credits": 4,
+    "year": 4,
+    "semester": 2,
+    "isGPA": true,
+    "syllabusVersion": "OLD",
+    "specialization": "SE"
+  }
+]

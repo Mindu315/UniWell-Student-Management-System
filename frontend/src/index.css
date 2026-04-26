@@ -1,13 +1,198 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply text-textPrimary bg-background;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1E3A5F20;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #1E3A5F40;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer components {
+  /* ── Glass card effect ── */
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40;
+    box-shadow: 0 4px 30px rgba(30, 58, 95, 0.05);
+  }
+
+  .glass-card-strong {
+    @apply bg-white/90 backdrop-blur-2xl border border-white/60;
+    box-shadow: 0 8px 32px rgba(30, 58, 95, 0.08);
+  }
+
+  /* ── Premium card ── */
+  .premium-card {
+    @apply bg-card rounded-2xl border border-gray-100/80 shadow-elevated;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .premium-card:hover {
+    @apply shadow-card-hover;
+    transform: translateY(-2px);
+  }
+
+  /* ── Gradient text ── */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #1E3A5F 0%, #1F5F73 50%, #2BB673 100%);
+  }
+
+  /* ── Animated gradient border ── */
+  .gradient-border {
+    position: relative;
+  }
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(135deg, #1E3A5F, #1F5F73, #2BB673);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* ── Shimmer loading effect ── */
+  .shimmer-bg {
+    background: linear-gradient(90deg, transparent 0%, rgba(30,58,95,0.03) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  /* ── Floating dot decorations ── */
+  .floating-dots::before,
+  .floating-dots::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .floating-dots::before {
+    width: 200px;
+    height: 200px;
+    background: #2BB673;
+    top: -60px;
+    right: -40px;
+    animation: float 6s ease-in-out infinite;
+  }
+  .floating-dots::after {
+    width: 150px;
+    height: 150px;
+    background: #1E3A5F;
+    bottom: -30px;
+    left: -30px;
+    animation: float 8s ease-in-out infinite reverse;
+  }
+
+  /* ── Custom range slider ── */
+  input[type="range"] {
+    @apply appearance-none h-2 rounded-full cursor-pointer;
+    background: linear-gradient(90deg, #1E3A5F, #1F5F73, #2BB673);
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    @apply appearance-none w-5 h-5 rounded-full bg-white border-2 border-primary cursor-pointer;
+    box-shadow: 0 2px 8px rgba(30,58,95,0.2);
+    transition: all 0.2s ease;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    @apply scale-110 border-secondary;
+    box-shadow: 0 4px 12px rgba(30,58,95,0.3);
+  }
+  input[type="range"]::-moz-range-thumb {
+    @apply w-5 h-5 rounded-full bg-white border-2 border-primary cursor-pointer;
+    box-shadow: 0 2px 8px rgba(30,58,95,0.2);
+  }
+
+  /* ── Button hover glow ── */
+  .btn-glow {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 60%);
+    transition: opacity 0.3s ease;
+  }
+  .btn-glow:hover::after {
+    opacity: 1;
+  }
 }
+
+/* Safe area padding for mobile bottom nav */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Toast slide-in animation */
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(1rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+/* Staggered fade-in-up for child cards */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 360ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 420ms; }
+
+/* Extended stagger for large lists */
+.stagger-children > *:nth-child(9) { animation-delay: 480ms; }
+.stagger-children > *:nth-child(10) { animation-delay: 540ms; }
+.stagger-children > *:nth-child(11) { animation-delay: 600ms; }
+.stagger-children > *:nth-child(12) { animation-delay: 660ms; }
