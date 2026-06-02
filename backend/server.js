@@ -30,9 +30,10 @@ app.use(express.json()); // Parse JSON request body
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
 
 // Enable CORS for React frontend
+// Enable CORS for React frontend
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow requests from React app
-  credentials: true
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000', // Allow requests from live frontend OR local
+    credentials: true
 }));
 
 // Routes
