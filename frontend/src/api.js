@@ -7,7 +7,7 @@ import axios from 'axios';
 
 // Create axios instance with base URL (testing)
 const api = axios.create({
-  baseURL: '[https://uniwell-student-management-system.onrender.com/api](https://uniwell-student-management-system.onrender.com/api)',
+  baseURL: 'https://uniwell-student-management-system.onrender.com/api',
   headers: {
     'Content-Type': 'application/json'
   }
